@@ -1,3 +1,10 @@
+/**
+ * @Author: 郑钊宇
+ * @Date: 2022-03-16 08:44:06
+ * @LastEditTime: 2022-03-16 19:52:53
+ * @LastEditors: 郑钊宇
+ * @Description:
+ */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
@@ -19,8 +26,9 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['token'] = getToken()
     }
+    // config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
     return config
   },
   error => {
