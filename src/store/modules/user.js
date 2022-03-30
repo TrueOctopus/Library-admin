@@ -1,12 +1,13 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-30 15:49:12
+ * @LastEditTime: 2022-03-30 18:35:03
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
@@ -59,7 +60,7 @@ const actions = {
           return reject('验证失败请重新登录')
         }
         const admin = ['user', 'editor', 'admin']
-        const editor = ['editor']
+        const editor = ['user', 'editor', 'admin']
         const user = ['user']
         const roleList = [user, editor, admin]
 
@@ -72,6 +73,17 @@ const actions = {
         reject(error)
       })
     })
+  },
+  // user logout
+  logout({ commit }) {
+    commit('SET_TOKEN', '')
+    commit('SET_ROLES', [])
+    removeToken()
+    resetRouter()
+
+    // reset visited views and cached views
+    // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+    // dispatch('tagsView/delAllViews', null, { root: true })
   },
 
   // remove token

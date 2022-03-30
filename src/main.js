@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-16 14:42:35
+ * @LastEditTime: 2022-03-30 18:16:38
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -21,6 +21,9 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
+import permission from '@/directive/permission/index.js' // 权限判断指令
+Vue.directive('permission', permission)
 
 /**
  * If you don't want to use mock-server

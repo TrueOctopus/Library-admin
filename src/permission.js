@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-30 16:18:41
+ * @LastEditTime: 2022-03-30 18:25:20
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -45,7 +45,6 @@ router.beforeEach(async(to, from, next) => {
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.roles)
-
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 

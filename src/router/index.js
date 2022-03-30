@@ -147,26 +147,17 @@ export const constantRoutes = [
         meta: { title: '菜单2' }
       }
     ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: '外部链接', icon: 'link' }
-      }
-    ]
   }
+
 ]
+
 export const asyncRoutes = [
 
   {
     path: '/users',
     component: Layout,
     redirect: '/users/userlist',
-    meta: { title: '用户管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '用户管理', icon: 'el-icon-s-help', roles: ['admin'] },
     children: [
       {
         path: 'userlist',
@@ -227,49 +218,49 @@ export const asyncRoutes = [
       },
 
       {
-        path: 'lectures',
-        name: 'lectures',
+        path: 'publicity',
+        name: 'publicity',
         component: () => import('@/views/table/index'),
         meta: { title: '阅读推广', icon: 'table' }
       },
 
       {
-        path: 'lectures',
-        name: 'lectures',
+        path: 'service',
+        name: 'service',
         component: () => import('@/views/table/index'),
         meta: { title: '读者服务', icon: 'table' },
         children: [
           {
-            path: 'pictures',
-            name: 'pictures',
+            path: 'opentime',
+            name: 'opentime',
             component: () => import('@/views/table/index'),
             meta: { title: '开馆时间', icon: 'table' }
           },
 
           {
-            path: 'create',
-            name: 'create',
+            path: 'distribution',
+            name: 'distribution',
             component: () => import('@/views/table/index'),
             meta: { title: '馆藏分布', icon: 'table' }
           },
 
           {
-            path: 'create',
-            name: 'create',
+            path: 'borrowService',
+            name: 'borrowService',
             component: () => import('@/views/table/index'),
             meta: { title: '借阅服务', icon: 'table' }
           },
 
           {
-            path: 'create',
-            name: 'create',
+            path: 'reserve',
+            name: 'reserve',
             component: () => import('@/views/table/index'),
             meta: { title: '预约服务', icon: 'table' }
           },
 
           {
-            path: 'create',
-            name: 'create',
+            path: 'donation',
+            name: 'donation',
             component: () => import('@/views/table/index'),
             meta: { title: '捐献', icon: 'table' }
           }
@@ -299,10 +290,21 @@ export const asyncRoutes = [
       },
 
       {
-        path: 'create',
-        name: 'create',
+        path: 'bottom',
+        name: 'bottom',
         component: () => import('@/views/table/index'),
         meta: { title: '底部栏', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+        meta: { title: '外部链接', icon: 'link' }
       }
     ]
   },

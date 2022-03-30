@@ -1,6 +1,13 @@
+<!--
+ * @Author: 郑钊宇
+ * @Date: 2022-03-16 08:44:06
+ * @LastEditTime: 2022-03-30 16:49:41
+ * @LastEditors: 郑钊宇
+ * @Description:
+-->
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">username: {{ username }}</div>
   </div>
 </template>
 
@@ -11,7 +18,7 @@ export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name'
+      'username'
     ])
   }
 }
