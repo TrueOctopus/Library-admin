@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-16 19:49:02
+ * @LastEditTime: 2022-03-30 10:47:03
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -9,8 +9,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
-    // url: '/management/login',
+    url: '/userBackstage/login',
     method: 'post',
     data
   })
@@ -18,15 +17,58 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/token/parseToken',
+    method: 'post',
+    data: {
+      'tokenStr': token
+    }
   })
 }
 
-export function logout() {
+export function fetchUserList(pageNo, pageSize) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/userBackstage/userlist',
+    method: 'get',
+    params: { pageNo, pageSize }
+  })
+}
+
+export function fetchUserById(userId) {
+  return request({
+    url: '/userBackstage/userinfo',
+    method: 'get',
+    params: { userId }
+  })
+}
+
+export function deleteUserById(userId) {
+  return request({
+    url: '/userBackstage/deleteUser',
+    method: 'post',
+    data: { 'id': userId }
+  })
+}
+
+export function userUpdate(data) {
+  return request({
+    url: '/userBackstage/userUpdate',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchUserByName(pageNo, pageSize, search) {
+  return request({
+    url: '/userBackstage/searchByName',
+    method: 'get',
+    params: { pageNo, pageSize, search }
+  })
+}
+
+export function fetchUserByJurisdiction(pageNo, pageSize, jurisdiction) {
+  return request({
+    url: '/userBackstage/searchByJurisdiction',
+    method: 'get',
+    params: { pageNo, pageSize, jurisdiction }
   })
 }

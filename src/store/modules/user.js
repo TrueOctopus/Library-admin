@@ -1,19 +1,18 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-16 15:10:30
+ * @LastEditTime: 2022-03-30 15:49:12
  * @LastEditors: 郑钊宇
  * @Description:
  */
-import { login, logout, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: ''
+    roles: [],
+    username: ''
   }
 }
 
@@ -26,11 +25,11 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_USERNAME: (state, username) => {
+    state.username = username
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -59,26 +58,16 @@ const actions = {
         if (!data) {
           return reject('验证失败请重新登录')
         }
+        const admin = ['user', 'editor', 'admin']
+        const editor = ['editor']
+        const user = ['user']
+        const roleList = [user, editor, admin]
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        // console.log(data.userInfo)
+        const { username, jurisdiction } = data.userInfo
+        commit('SET_ROLES', roleList[jurisdiction])
+        commit('SET_USERNAME', username)
         resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
       }).catch(error => {
         reject(error)
       })
@@ -90,6 +79,7 @@ const actions = {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
+      commit('SET_ROLES', [])
       resolve()
     })
   }

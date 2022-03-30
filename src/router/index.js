@@ -56,151 +56,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/users',
-    component: Layout,
-    redirect: '/users/userlist',
-    meta: { title: '用户管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'userlist',
-        name: 'userlist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '读者列表', icon: 'table' }
-      },
-
-      {
-        path: 'teacherlist',
-        name: 'teacherlist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '教职工读者证列表', icon: 'table' }
-      }
-    ]
-  },
-
-  {
-    path: '/resource',
-    component: Layout,
-    redirect: '/resource/resourcelist',
-    meta: { title: '资源管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'resourcelist',
-        name: 'resourcelist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '电子资源', icon: 'table' }
-      },
-
-      {
-        path: 'characteristic',
-        name: 'characteristic',
-        component: () => import('@/views/table/index'),
-        meta: { title: '特色资源管理', icon: 'table' }
-      }
-    ]
-  },
-
-  {
-    path: '/announcement',
-    component: Layout,
-    redirect: '/announcement/newslist',
-    meta: { title: '文章管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'newslist',
-        name: 'newslist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '新闻公告', icon: 'table' }
-      },
-
-      {
-        path: 'lectures',
-        name: 'lectures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '活动讲座', icon: 'table' }
-      },
-
-      {
-        path: 'lectures',
-        name: 'lectures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '阅读推广', icon: 'table' }
-      },
-
-      {
-        path: 'lectures',
-        name: 'lectures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '读者服务', icon: 'table' },
-        children: [
-          {
-            path: 'pictures',
-            name: 'pictures',
-            component: () => import('@/views/table/index'),
-            meta: { title: '开馆时间', icon: 'table' }
-          },
-
-          {
-            path: 'create',
-            name: 'create',
-            component: () => import('@/views/table/index'),
-            meta: { title: '馆藏分布', icon: 'table' }
-          },
-
-          {
-            path: 'create',
-            name: 'create',
-            component: () => import('@/views/table/index'),
-            meta: { title: '借阅服务', icon: 'table' }
-          },
-
-          {
-            path: 'create',
-            name: 'create',
-            component: () => import('@/views/table/index'),
-            meta: { title: '预约服务', icon: 'table' }
-          },
-
-          {
-            path: 'create',
-            name: 'create',
-            component: () => import('@/views/table/index'),
-            meta: { title: '捐献', icon: 'table' }
-          }
-        ]
-      },
-
-      {
-        path: 'create',
-        component: () => import('@/views/article/create'),
-        name: 'CreateArticle',
-        meta: { title: '新建文章', icon: 'edit' }
-      }
-    ]
-  },
-
-  {
-    path: '/page',
-    component: Layout,
-    redirect: '/page/pictures',
-    meta: { title: '页面管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'pictures',
-        name: 'pictures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '图片管理', icon: 'table' }
-      },
-
-      {
-        path: 'create',
-        name: 'create',
-        component: () => import('@/views/table/index'),
-        meta: { title: '底部栏', icon: 'table' }
-      }
-    ]
-  },
-
-  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
@@ -303,12 +158,158 @@ export const constantRoutes = [
         meta: { title: '外部链接', icon: 'link' }
       }
     ]
+  }
+]
+export const asyncRoutes = [
+
+  {
+    path: '/users',
+    component: Layout,
+    redirect: '/users/userlist',
+    meta: { title: '用户管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'userlist',
+        name: 'userlist',
+        component: () => import('@/views/table/index'),
+        meta: { title: '读者列表', icon: 'table' }
+      },
+
+      {
+        path: 'teacherlist',
+        name: 'teacherlist',
+        component: () => import('@/views/table/index'),
+        meta: { title: '教职工读者证列表', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/resource',
+    component: Layout,
+    redirect: '/resource/resourcelist',
+    meta: { title: '资源管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'resourcelist',
+        name: 'resourcelist',
+        component: () => import('@/views/table/index'),
+        meta: { title: '电子资源', icon: 'table' }
+      },
+
+      {
+        path: 'characteristic',
+        name: 'characteristic',
+        component: () => import('@/views/table/index'),
+        meta: { title: '特色资源管理', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/announcement',
+    component: Layout,
+    redirect: '/announcement/newslist',
+    meta: { title: '文章管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'newslist',
+        name: 'newslist',
+        component: () => import('@/views/table/index'),
+        meta: { title: '新闻公告', icon: 'table' }
+      },
+
+      {
+        path: 'lectures',
+        name: 'lectures',
+        component: () => import('@/views/table/index'),
+        meta: { title: '活动讲座', icon: 'table' }
+      },
+
+      {
+        path: 'lectures',
+        name: 'lectures',
+        component: () => import('@/views/table/index'),
+        meta: { title: '阅读推广', icon: 'table' }
+      },
+
+      {
+        path: 'lectures',
+        name: 'lectures',
+        component: () => import('@/views/table/index'),
+        meta: { title: '读者服务', icon: 'table' },
+        children: [
+          {
+            path: 'pictures',
+            name: 'pictures',
+            component: () => import('@/views/table/index'),
+            meta: { title: '开馆时间', icon: 'table' }
+          },
+
+          {
+            path: 'create',
+            name: 'create',
+            component: () => import('@/views/table/index'),
+            meta: { title: '馆藏分布', icon: 'table' }
+          },
+
+          {
+            path: 'create',
+            name: 'create',
+            component: () => import('@/views/table/index'),
+            meta: { title: '借阅服务', icon: 'table' }
+          },
+
+          {
+            path: 'create',
+            name: 'create',
+            component: () => import('@/views/table/index'),
+            meta: { title: '预约服务', icon: 'table' }
+          },
+
+          {
+            path: 'create',
+            name: 'create',
+            component: () => import('@/views/table/index'),
+            meta: { title: '捐献', icon: 'table' }
+          }
+        ]
+      },
+
+      {
+        path: 'create',
+        component: () => import('@/views/article/create'),
+        name: 'CreateArticle',
+        meta: { title: '新建文章', icon: 'edit' }
+      }
+    ]
+  },
+
+  {
+    path: '/page',
+    component: Layout,
+    redirect: '/page/pictures',
+    meta: { title: '页面管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'pictures',
+        name: 'pictures',
+        component: () => import('@/views/table/index'),
+        meta: { title: '图片管理', icon: 'table' }
+      },
+
+      {
+        path: 'create',
+        name: 'create',
+        component: () => import('@/views/table/index'),
+        meta: { title: '底部栏', icon: 'table' }
+      }
+    ]
   },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
-
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
