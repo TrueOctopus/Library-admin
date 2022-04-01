@@ -157,20 +157,20 @@ export const asyncRoutes = [
     path: '/users',
     component: Layout,
     redirect: '/users/userlist',
-    meta: { title: '用户管理', icon: 'el-icon-s-help', roles: ['admin'] },
+    meta: { title: '用户管理', icon: 'user', roles: ['admin'] },
     children: [
       {
         path: 'userlist',
         name: 'userlist',
         component: () => import('@/views/table/index'),
-        meta: { title: '读者列表', icon: 'table' }
+        meta: { title: '读者列表', icon: 'user' }
       },
 
       {
         path: 'teacherlist',
         name: 'teacherlist',
         component: () => import('@/views/table/index'),
-        meta: { title: '教职工读者证列表', icon: 'table' }
+        meta: { title: '教职工读者证列表', icon: 'user' }
       }
     ]
   },
@@ -179,20 +179,20 @@ export const asyncRoutes = [
     path: '/resource',
     component: Layout,
     redirect: '/resource/resourcelist',
-    meta: { title: '资源管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '资源管理', icon: 'tab', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'resourcelist',
         name: 'resourcelist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '电子资源', icon: 'table' }
+        component: () => import('@/views/resource/resource'),
+        meta: { title: '电子资源', icon: 'tab' }
       },
 
       {
         path: 'characteristic',
         name: 'characteristic',
-        component: () => import('@/views/table/index'),
-        meta: { title: '特色资源管理', icon: 'table' }
+        component: () => import('@/views/resource/characteristic'),
+        meta: { title: '特色资源管理', icon: 'tab' }
       }
     ]
   },

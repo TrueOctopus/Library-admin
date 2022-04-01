@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-30 18:16:38
+ * @LastEditTime: 2022-03-31 09:43:51
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -23,8 +23,9 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import permission from '@/directive/permission/index.js' // 权限判断指令
+import waves from '@/directive/waves/index.js'
 Vue.directive('permission', permission)
-
+Vue.directive('waves', waves)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
