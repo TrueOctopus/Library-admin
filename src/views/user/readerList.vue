@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-01 10:20:13
+ * @LastEditTime: 2022-04-01 14:45:18
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -169,7 +169,7 @@ export default {
     fetchData() {
       this.listLoading = true
       fetchUserList(this.listQuery).then(response => {
-        console.log(response.data.pageinfo)
+        // console.log(response.data.pageinfo)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false

@@ -204,9 +204,22 @@ export const asyncRoutes = [
     meta: { title: '文章管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
     children: [
       {
+        path: 'create',
+        component: () => import('@/views/article/create'),
+        name: 'CreateArticle',
+        meta: { title: '新建文章', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/article/edit'),
+        name: 'EditArticle',
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/announcement/newslist' },
+        hidden: true
+      },
+      {
         path: 'newslist',
         name: 'newslist',
-        component: () => import('@/views/article/list'),
+        component: () => import('@/views/news/list'),
         meta: { title: '新闻管理', icon: 'table' }
       },
 
@@ -265,13 +278,6 @@ export const asyncRoutes = [
             meta: { title: '捐献', icon: 'table' }
           }
         ]
-      },
-
-      {
-        path: 'create',
-        component: () => import('@/views/article/create'),
-        name: 'CreateArticle',
-        meta: { title: '新建文章', icon: 'edit' }
       }
     ]
   },

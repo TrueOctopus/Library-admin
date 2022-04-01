@@ -1,7 +1,7 @@
 <template>
   <div class="createPost-container">
-    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-      <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
+    <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" class="form-container">
+      <sticky :z-index="10" :class-name="'sub-navbar '+statusMap[postForm.isrelease]">
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
           发布
         </el-button>
@@ -17,54 +17,42 @@
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
-                标题
+                文章标题
               </MDinput>
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="60px" label="作者:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="文章类型:" class="postInfo-container-item">
+                    <el-select v-model="postForm.catalog" class="filter-item" placeholder="点击选择">
+                      <el-option v-for="item in catalogOptions" :key="item" :label="item" :value="item" />
                     </el-select>
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="10">
+                <el-col :span="12">
                   <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
+                    <el-date-picker v-model="releasetime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
 
-                <!-- <el-col :span="6">
-                  <el-form-item label-width="90px" label="Importance:" class="postInfo-container-item">
-                    <el-rate
-                      v-model="postForm.importance"
-                      :max="3"
-                      :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                      :low-threshold="1"
-                      :high-threshold="3"
-                      style="display:inline-block"
-                    />
-                  </el-form-item>
-                </el-col> -->
               </el-row>
             </div>
           </el-col>
         </el-row>
 
-        <!-- <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Summary:">
-          <el-input v-model="postForm.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item> -->
+        <el-form-item style="margin-bottom: 40px;" label-width="75px" label="文章摘要:">
+          <el-input v-model="postForm.remark" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入摘要内容" />
+          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }} 字</span>
+        </el-form-item>
 
         <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="postForm.content" :height="400" />
         </el-form-item>
 
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="postForm.image_uri" />
+        <el-form-item prop="picture" style="margin-bottom: 30px;" label="文章图片:">
+          <Upload v-model="pictureData" />
         </el-form-item>
       </div>
     </el-form>
@@ -76,24 +64,19 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { searchUser } from '@/api/remote-search'
+import { fetchNewsDetailById } from '@/api/news'
 import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
 const defaultForm = {
-  status: 'draft',
   title: '', // 文章题目
   content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  remark: '', // 文章摘要
+  picture: '', // 文章图片
+  catalog: '', // 类型
+  releasetime: '',
+  isrelease: 0,
+  id: undefined
 }
 
 export default {
@@ -117,51 +100,34 @@ export default {
         callback()
       }
     }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
-      } else {
-        callback()
-      }
-    }
     return {
       postForm: Object.assign({}, defaultForm),
+      pictureData: undefined,
       loading: false,
-      userListOptions: [],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        content: [{ validator: validateRequire }]
       },
+      statusMap: ['draft', 'published', 'deleted'],
+      catalogOptions: ['新闻', '公告', '购买', '试用'],
       tempRoute: {}
     }
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
+      return this.postForm.remark.length
     },
-    lang() {
-      return 'zh'
-    },
-    displayTime: {
+    releasetime: {
       // set and get is useful when the data
       // returned by the back end api is different from the front end
       // back end return => "2013-06-25 06:59:25"
       // front end need timestamp => 1372114765000
       get() {
-        return (+new Date(this.postForm.display_time))
+        return (+new Date(this.postForm.releasetime))
       },
       set(val) {
-        this.postForm.display_time = new Date(val)
+        this.postForm.releasetime = new Date(val)
       }
     }
   },
@@ -178,15 +144,13 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchArticle(id).then(response => {
-        this.postForm = response.data
+      fetchNewsDetailById(id).then(response => {
+        console.log(response)
+        this.postForm = response.data.news
 
         // just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
-        // set tagsview title
-        this.setTagsViewTitle()
+        this.postForm.remark += `   Article Id:${this.postForm.id}`
 
         // set page title
         this.setPageTitle()
@@ -194,13 +158,8 @@ export default {
         console.log(err)
       })
     },
-    setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
     setPageTitle() {
-      const title = 'Edit Article'
+      const title = '编辑文章'
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
@@ -214,7 +173,7 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.postForm.status = 'published'
+          this.postForm.isrelease = 1
           this.loading = false
         } else {
           console.log('error submit!!')
@@ -236,13 +195,7 @@ export default {
         showClose: true,
         duration: 1000
       })
-      this.postForm.status = 'draft'
-    },
-    getRemoteUserList(query) {
-      searchUser(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
-      })
+      this.postForm.isrelease = 0
     }
   }
 }
