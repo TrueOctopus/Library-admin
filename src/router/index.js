@@ -162,7 +162,7 @@ export const asyncRoutes = [
       {
         path: 'userlist',
         name: 'userlist',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/user/readerList.vue'),
         meta: { title: '读者列表', icon: 'user' }
       },
 
@@ -206,8 +206,8 @@ export const asyncRoutes = [
       {
         path: 'newslist',
         name: 'newslist',
-        component: () => import('@/views/table/index'),
-        meta: { title: '新闻公告', icon: 'table' }
+        component: () => import('@/views/article/list'),
+        meta: { title: '新闻管理', icon: 'table' }
       },
 
       {

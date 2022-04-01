@@ -1,19 +1,17 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-01 09:55:52
+ * @LastEditTime: 2022-04-01 10:20:13
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="资源名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.type" placeholder="资源类型" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in resourceTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.display_name" />
-      </el-select>
-      <el-select v-model="listQuery.genre" placeholder="资源类型" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in resourceGenreOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.display_name" />
+      <el-input v-model="listQuery.username" placeholder="用户名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.email" placeholder="邮箱" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.jurisdiction" placeholder="权限" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in jurisdictionOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -39,29 +37,29 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="资源名称" width="110" align="center">
+      <el-table-column label="用户名" width="150" align="center">
         <template slot-scope="scope">
-          {{ scope.row.urlname }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column label="资源地址" width="220" align="center">
+      <el-table-column label="邮箱" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.urladdress }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="资源类型" width="110" align="center">
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
-          <span v-for="type in scope.row.types" :key="type">{{ type }} </span>
+          <span>{{ scope.row.createtime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="资源类别" width="110" align="center">
+      <el-table-column label="更新时间" align="center">
         <template slot-scope="scope">
-          {{ scope.row.genre }}
+          <span>{{ scope.row.updatetime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+      <el-table-column label="权限" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.remark }}
+          {{ jurisdictionOptions[scope.row.jurisdiction].display_name }}({{ jurisdictionOptions[scope.row.jurisdiction].key }})
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -80,24 +78,19 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="资源名称" prop="urlname">
-          <el-input v-model="temp.urlname" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="temp.username" />
         </el-form-item>
-        <el-form-item label="资源地址" prop="urladdress">
-          <el-input v-model="temp.urladdress" />
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email" />
         </el-form-item>
-        <el-form-item label="资源类别" prop="types">
-          <el-checkbox-group v-model="temp.types">
-            <el-checkbox v-for="item in resourceTypeOptions" :key="item.key" :label="item.display_name" name="types" />
-          </el-checkbox-group>
+        <el-form-item v-show="dialogStatus==='create'" label="密码" prop="password">
+          <el-input v-model="temp.password" />
         </el-form-item>
-        <el-form-item label="资源类型" prop="genre">
-          <el-select v-model="temp.genre" class="filter-item" placeholder="点击选择">
-            <el-option v-for="item in resourceGenreOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />
+        <el-form-item label="权限" prop="jurisdiction">
+          <el-select v-model="temp.jurisdiction" class="filter-item" placeholder="点击选择">
+            <el-option v-for="item in jurisdictionOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="temp.remark" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -113,11 +106,11 @@
 </template>
 
 <script>
-import { fetchDatabaseList, insertDatabaseList, deleteDatabaseList, updateDatabaseList } from '@/api/resource'
+import { fetchUserList, addUser, userUpdate, deleteUserById } from '@/api/user'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'ResourceTable',
+  name: 'ReaderTable',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -137,16 +130,15 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        type: '',
-        title: '',
-        genre: ''
+        username: '',
+        email: '',
+        jurisdiction: ''
       },
       temp: {
-        urlname: '',
-        urladdress: '',
-        types: [],
-        genre: '',
-        remark: ''
+        username: '',
+        email: '',
+        jurisdiction: 0,
+        password: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -155,27 +147,18 @@ export default {
         create: '创建'
       },
       rules: {
-        urlname: [{ required: true, message: '资源名称不能为空', trigger: 'blur' }],
-        urladdress: [{ required: true, message: '资源地址不能为空', trigger: 'blur' }],
-        types: [{ type: 'array', required: true, message: '请至少选择一个资源类型', trigger: 'change' }],
-        genre: [{ required: true, message: '资源类别不能为空', trigger: 'change' }]
+        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+        email: [{ type: 'email', required: true, message: '输入格式错误或不能为空', trigger: 'blur' }],
+        jurisdiction: [{ required: true, message: '权限设置不能为空', trigger: 'change' }],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          { min: 6, message: '长度至少需要 6 个字符', trigger: 'blur' }
+        ]
       },
-      resourceTypeOptions: [
-        { key: 'comprehensive', display_name: '综合' },
-        { key: 'Periodicals', display_name: '期刊' },
-        { key: 'Meeting', display_name: '会议' },
-        { key: 'PhD thesis', display_name: '博硕' },
-        { key: 'digital book', display_name: '电子图书' },
-        { key: 'Statistics', display_name: '数据统计' },
-        { key: 'Bibliometrics', display_name: '文献计量' },
-        { key: 'digital library', display_name: '数字图书馆' }
-      ],
-      resourceGenreOptions: [
-        { key: 'CN', display_name: '中文' },
-        { key: 'Foreign', display_name: '外文' },
-        { key: 'CN & foreign', display_name: '中外文' },
-        { key: 'Try', display_name: '试用' },
-        { key: 'Open', display_name: '开放' }
+      jurisdictionOptions: [
+        { key: '0', display_name: '普通用户' },
+        { key: '1', display_name: '编辑' },
+        { key: '2', display_name: '管理员' }
       ]
     }
   },
@@ -185,36 +168,26 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchDatabaseList({
-        'pageNo': this.listQuery.pageNo,
-        'pageSize': this.listQuery.pageSize
-      }).then(response => {
-        const list = response.data.pageInfo.list
-        list.forEach(ele => {
-          ele.types = ele.types.split('|')
-        })
-        this.list = list
-        this.total = response.data.pageInfo.list.length
+      fetchUserList(this.listQuery).then(response => {
+        console.log(response.data.pageinfo)
+        this.list = response.data.pageinfo.list
+        this.total = response.data.pageinfo.total
         this.listLoading = false
       })
     },
     resetTemp() {
       this.temp = {
-        urlname: '',
-        urladdress: '',
-        types: [],
-        genre: '',
-        remark: ''
+        username: '',
+        email: '',
+        jurisdiction: 0,
+        password: ''
       }
     },
     handleFilter() {
       this.listLoading = true
-      fetchDatabaseList(this.listQuery).then(response => {
-        const list = response.data.pageInfo.list
-        list.forEach(ele => {
-          ele.types = ele.types.split('|')
-        })
-        this.list = list
+      fetchUserList(this.listQuery).then(response => {
+        console.log(response.data.pageinfo)
+        this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
       })
@@ -230,14 +203,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          let postType = ''
-          this.temp['types'].forEach(type => {
-            postType = postType + type + '|'
-          })
-          const data = this.temp
-          data['types'] = postType.slice(0, postType.length - 1)
-          insertDatabaseList(data).then(() => {
+          addUser(this.temp).then(() => {
             this.fetchData()
+            // this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -260,13 +228,11 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          let postType = ''
-          this.temp['types'].forEach(type => {
-            postType = postType + type + '|'
-          })
           const data = this.temp
-          data['types'] = postType.slice(0, postType.length - 1)
-          updateDatabaseList(data).then(() => {
+          delete data.password
+          delete data.createtime
+          delete data.updatetime
+          userUpdate(data).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
@@ -280,7 +246,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteDatabaseList(row.id).then(() => {
+      deleteUserById(row.id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
         this.$notify({

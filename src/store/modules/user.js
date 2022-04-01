@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-30 18:35:03
+ * @LastEditTime: 2022-04-01 09:35:44
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -60,7 +60,7 @@ const actions = {
           return reject('验证失败请重新登录')
         }
         const admin = ['user', 'editor', 'admin']
-        const editor = ['user', 'editor', 'admin']
+        const editor = ['user', 'editor']
         const user = ['user']
         const roleList = [user, editor, admin]
 

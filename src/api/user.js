@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-03-30 10:47:03
+ * @LastEditTime: 2022-04-01 10:04:31
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -25,7 +25,7 @@ export function getInfo(token) {
   })
 }
 
-export function fetchUserList(pageNo, pageSize) {
+export function fetchUserList({ pageNo, pageSize }) {
   return request({
     url: '/userBackstage/userlist',
     method: 'get',
@@ -49,6 +49,13 @@ export function deleteUserById(userId) {
   })
 }
 
+export function addUser(data) {
+  return request({
+    url: '/userAction/register',
+    method: 'post',
+    data
+  })
+}
 export function userUpdate(data) {
   return request({
     url: '/userBackstage/userUpdate',
@@ -57,7 +64,7 @@ export function userUpdate(data) {
   })
 }
 
-export function fetchUserByName(pageNo, pageSize, search) {
+export function fetchUserByName({ pageNo, pageSize, search }) {
   return request({
     url: '/userBackstage/searchByName',
     method: 'get',
@@ -65,7 +72,7 @@ export function fetchUserByName(pageNo, pageSize, search) {
   })
 }
 
-export function fetchUserByJurisdiction(pageNo, pageSize, jurisdiction) {
+export function fetchUserByJurisdiction({ pageNo, pageSize, jurisdiction }) {
   return request({
     url: '/userBackstage/searchByJurisdiction',
     method: 'get',
