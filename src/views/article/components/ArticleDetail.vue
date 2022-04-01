@@ -2,10 +2,10 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" class="form-container">
       <sticky :z-index="10" :class-name="'sub-navbar '+statusMap[postForm.isrelease]">
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm(1)">
           发布
         </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">
+        <el-button v-loading="loading" type="warning" @click="submitForm(0)">
           存草稿
         </el-button>
       </sticky>
@@ -31,9 +31,9 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="releasetime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
+                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
                   </el-form-item>
                 </el-col>
 
@@ -64,7 +64,7 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchNewsDetailById } from '@/api/news'
+import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
 import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
@@ -74,7 +74,7 @@ const defaultForm = {
   remark: '', // 文章摘要
   picture: '', // 文章图片
   catalog: '', // 类型
-  releasetime: '',
+  releasetime: undefined,
   isrelease: 0,
   id: undefined
 }
@@ -111,23 +111,25 @@ export default {
       },
       statusMap: ['draft', 'published', 'deleted'],
       catalogOptions: ['新闻', '公告', '购买', '试用'],
-      tempRoute: {}
+      tempRoute: {},
+      display_time: ''
     }
   },
   computed: {
     contentShortLength() {
       return this.postForm.remark.length
     },
-    releasetime: {
+    displayTime: {
       // set and get is useful when the data
       // returned by the back end api is different from the front end
       // back end return => "2013-06-25 06:59:25"
       // front end need timestamp => 1372114765000
       get() {
-        return (+new Date(this.postForm.releasetime))
+        return (+new Date(this.display_time))
       },
       set(val) {
-        this.postForm.releasetime = new Date(val)
+        this.display_time = new Date(val)
+        this.postForm.releasetime = this.display_time
       }
     }
   },
@@ -136,7 +138,7 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
     }
-
+    this.display_time = this.postForm.releasetime
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -145,12 +147,11 @@ export default {
   methods: {
     fetchData(id) {
       fetchNewsDetailById(id).then(response => {
-        console.log(response)
         this.postForm = response.data.news
 
         // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.remark += `   Article Id:${this.postForm.id}`
+        // this.postForm.title += `   Article Id:${this.postForm.id}`
+        // this.postForm.remark += `   Article Id:${this.postForm.id}`
 
         // set page title
         this.setPageTitle()
@@ -162,40 +163,43 @@ export default {
       const title = '编辑文章'
       document.title = `${title} - ${this.postForm.id}`
     },
-    submitForm() {
+    submitForm(isrelease) {
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.isrelease = 1
-          this.loading = false
+          this.postForm.isrelease = isrelease
+          delete this.postForm['createtime']
+          delete this.postForm['updatetime']
+          if (this.isEdit) {
+            updateNews(this.postForm).then(response => {
+              console.log(response)
+              this.$notify({
+                title: '成功',
+                message: '发布文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
+            })
+          } else {
+            addNews(this.postForm).then(response => {
+              console.log(response)
+              this.$notify({
+                title: '成功',
+                message: '发布文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
+            })
+          }
         } else {
-          console.log('error submit!!')
+          console.log('提交错误!!')
+          this.loading = false
           return false
         }
       })
-    },
-    draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
-        })
-        return
-      }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      })
-      this.postForm.isrelease = 0
     }
   }
 }
