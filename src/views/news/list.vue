@@ -27,11 +27,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="主题图片">
+      <!-- <el-table-column width="120px" align="center" label="主题图片">
         <template slot-scope="scope">
           <span>{{ scope.row.picture }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column width="180px" align="center" label="创建时间">
         <template slot-scope="scope">
@@ -61,7 +61,7 @@
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
+          <router-link :to="'/announcement/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
@@ -89,7 +89,7 @@ export default {
         // deleted: 'danger'
         '1': 'success',
         '0': 'info',
-        '-1': 'danger'
+        '2': 'danger'
       }
       return statusMap[status]
     }

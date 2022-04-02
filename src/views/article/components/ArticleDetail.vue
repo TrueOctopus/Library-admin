@@ -52,7 +52,7 @@
         </el-form-item>
 
         <el-form-item prop="picture" style="margin-bottom: 30px;" label="文章图片:">
-          <Upload v-model="pictureData" />
+          <Upload v-model="postForm.picture" />
         </el-form-item>
       </div>
     </el-form>
@@ -65,8 +65,8 @@ import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
+// import { uploadPicture } from '@/api/file'
 import Warning from './Warning'
-// import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
 const defaultForm = {
   title: '', // 文章题目
@@ -110,7 +110,7 @@ export default {
         content: [{ validator: validateRequire }]
       },
       statusMap: ['draft', 'published', 'deleted'],
-      catalogOptions: ['新闻', '公告', '购买', '试用'],
+      catalogOptions: ['新闻', '公告', '购买', '试用', '讲座', '活动'],
       tempRoute: {},
       display_time: ''
     }
@@ -148,7 +148,9 @@ export default {
     fetchData(id) {
       fetchNewsDetailById(id).then(response => {
         this.postForm = response.data.news
-
+        console.log(response.data.news)
+        this.postForm.releasetime = new Date(response.data.news.releasetime)
+        this.display_time = this.postForm.releasetime
         // just for test
         // this.postForm.title += `   Article Id:${this.postForm.id}`
         // this.postForm.remark += `   Article Id:${this.postForm.id}`
@@ -167,7 +169,11 @@ export default {
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          // this.loading = true
+          // uploadPicture(this.pictureData).then(response => {
+          //   console.log(response)
+          // })
+
           this.postForm.isrelease = isrelease
           delete this.postForm['createtime']
           delete this.postForm['updatetime']
@@ -187,7 +193,7 @@ export default {
               console.log(response)
               this.$notify({
                 title: '成功',
-                message: '发布文章成功',
+                message: '文章已存草稿',
                 type: 'success',
                 duration: 2000
               })
