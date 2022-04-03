@@ -224,20 +224,6 @@ export const asyncRoutes = [
       },
 
       {
-        path: 'lectures',
-        name: 'lectures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '活动讲座', icon: 'table' }
-      },
-
-      {
-        path: 'publicity',
-        name: 'publicity',
-        component: () => import('@/views/table/index'),
-        meta: { title: '阅读推广', icon: 'table' }
-      },
-
-      {
         path: 'service',
         name: 'service',
         component: () => import('@/views/table/index'),
@@ -278,6 +264,62 @@ export const asyncRoutes = [
             meta: { title: '捐献', icon: 'table' }
           }
         ]
+      }
+    ]
+  },
+
+  {
+    path: '/lectures',
+    component: Layout,
+    redirect: '/lectures/list',
+    meta: { title: '活动讲座', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/lectures/create'),
+        name: 'CreateLectures',
+        meta: { title: '新建活动/讲座', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/lectures/edit'),
+        name: 'EditLectures',
+        meta: { title: '编辑活动/讲座', noCache: true, activeMenu: '/lectures/list' },
+        hidden: true
+      },
+      {
+        path: 'lecturesList',
+        name: 'lecturesList',
+        component: () => import('@/views/lectures/list'),
+        meta: { title: '活动/讲座列表', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/publicity',
+    component: Layout,
+    redirect: '/publicity/list',
+    meta: { title: '阅读推广', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/publicity/create'),
+        name: 'CreatePublicity',
+        meta: { title: '新建文章', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/publicity/edit'),
+        name: 'EditPublicity',
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/publicity/list' },
+        hidden: true
+      },
+      {
+        path: 'publicityList',
+        name: 'publicityList',
+        component: () => import('@/views/publicity/list'),
+        meta: { title: '推广书籍', icon: 'table' }
       }
     ]
   },

@@ -1,41 +1,41 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-04-02 19:04:54
- * @LastEditTime: 2022-04-02 19:14:52
+ * @LastEditTime: 2022-04-02 20:24:08
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import request from '@/utils/request'
 
-export function uploadFile(data) {
+export function uploadFile(oneFile) {
   return request({
     headers: {
       'Content-Type': 'multipart/form-data'
     },
     url: '/fileUpload/uploadFileAction',
     method: 'post',
-    data
+    data: { oneFile }
   })
 }
 
-export function uploadPicture(data) {
+export function uploadPicture(oneFile) {
   return request({
     headers: {
       'Content-Type': 'multipart/form-data'
     },
     url: '/fileUpload/uploadPictureAction',
     method: 'post',
-    data
+    data: { oneFile }
   })
 }
 
-export function uploadVideo(data) {
+export function uploadVideo(oneFile) {
   return request({
     headers: {
       'Content-Type': 'multipart/form-data'
     },
     url: '/fileUpload/uploadVideoAction',
     method: 'post',
-    data
+    data: { oneFile }
   })
 }

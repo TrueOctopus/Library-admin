@@ -1,3 +1,10 @@
+<!--
+ * @Author: 郑钊宇
+ * @Date: 2022-04-03 08:47:17
+ * @LastEditTime: 2022-04-03 09:12:04
+ * @LastEditors: 郑钊宇
+ * @Description:
+-->
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" class="form-container">
@@ -16,14 +23,14 @@
 
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
+              <MDinput v-model="postForm.title" :maxlength="100" name="tittle" required>
                 文章标题
               </MDinput>
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="文章类型:" class="postInfo-container-item" prop="catalog">
                     <el-select v-model="postForm.catalog" class="filter-item" placeholder="点击选择">
                       <el-option v-for="item in catalogOptions" :key="item" :label="item" :value="item" />
@@ -31,9 +38,15 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="10">
-                  <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item" prop="displayTime">
-                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="举办时间:" class="postInfo-container-item" prop="lecturetime">
+                    <el-date-picker v-model="lectureTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item" prop="releasetime">
+                    <el-date-picker v-model="releaseTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
                   </el-form-item>
                 </el-col>
 
@@ -42,7 +55,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="75px" label="文章摘要:">
+        <el-form-item style="margin-bottom: 40px;" label-width="110px" label="活动讲座简要:" prop="remark">
           <el-input v-model="postForm.remark" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入摘要内容" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }} 字</span>
         </el-form-item>
@@ -75,14 +88,15 @@ const defaultForm = {
   content: '', // 文章内容
   remark: '', // 文章摘要
   picture: '', // 文章图片
-  catalog: '新闻', // 类型
-  releasetime: new Date(),
+  catalog: '讲座', // 类型
+  lecturetime: new Date(), // 举办时间
+  releasetime: new Date(), // 发布时间
   isrelease: 0,
   id: undefined
 }
 
 export default {
-  name: 'ArticleDetail',
+  name: 'LecturesDetail',
   components: { Tinymce, MDinput, Upload, Sticky, Warning },
   props: {
     isEdit: {
@@ -108,30 +122,45 @@ export default {
       loading: false,
       rules: {
         title: [{ validator: validateRequire }],
+        remark: [{ validator: validateRequire }],
         content: [{ validator: validateRequire }],
         catalog: [{ validator: validateRequire }]
       },
       statusMap: ['draft', 'published', 'deleted'],
-      catalogOptions: ['新闻', '公告', '购买', '试用', '讲座', '活动'],
+      catalogOptions: ['讲座', '活动'],
       tempRoute: {},
-      display_time: new Date()
+      release_time: new Date(),
+      lecture_time: new Date()
     }
   },
   computed: {
     contentShortLength() {
       return this.postForm.remark.length
     },
-    displayTime: {
+    releaseTime: {
       // set and get is useful when the data
       // returned by the back end api is different from the front end
       // back end return => "2013-06-25 06:59:25"
       // front end need timestamp => 1372114765000
       get() {
-        return (+new Date(this.display_time))
+        return (+new Date(this.release_time))
       },
       set(val) {
-        this.display_time = new Date(val)
-        this.postForm.releasetime = this.display_time
+        this.release_time = new Date(val)
+        this.postForm.releasetime = this.release_time
+      }
+    },
+    lectureTime: {
+      // set and get is useful when the data
+      // returned by the back end api is different from the front end
+      // back end return => "2013-06-25 06:59:25"
+      // front end need timestamp => 1372114765000
+      get() {
+        return (+new Date(this.lecture_time))
+      },
+      set(val) {
+        this.lecture_time = new Date(val)
+        this.postForm.lecturetime = this.lecture_time
       }
     }
   },
@@ -140,7 +169,6 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
     }
-    this.display_time = this.postForm.releasetime
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -152,7 +180,8 @@ export default {
         this.postForm = response.data.news
         console.log(response.data.news)
         this.postForm.releasetime = new Date(response.data.news.releasetime)
-        this.display_time = this.postForm.releasetime
+        this.release_time = this.postForm.releasetime
+        this.lecture_time = this.postForm.lectureTime
         // just for test
         // this.postForm.title += `   Article Id:${this.postForm.id}`
         // this.postForm.remark += `   Article Id:${this.postForm.id}`
