@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:02
- * @LastEditTime: 2022-04-04 10:58:55
+ * @LastEditTime: 2022-04-04 15:23:48
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -65,7 +65,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="Status" width="110">
+      <el-table-column class-name="status-col" label="状态" width="110">
         <template slot-scope="{row}">
           <el-tag :type="row.isrelease | statusFilter">
             {{ status[row.isrelease] }}
@@ -73,7 +73,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
           <router-link :to="'/lectures/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">

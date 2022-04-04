@@ -1,10 +1,3 @@
-<!--
- * @Author: 郑钊宇
- * @Date: 2022-04-03 08:32:22
- * @LastEditTime: 2022-04-03 09:36:31
- * @LastEditors: 郑钊宇
- * @Description:
--->
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" class="form-container">
@@ -23,17 +16,17 @@
 
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="tittle" required>
-                书名
+              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
+                书籍名
               </MDinput>
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
 
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item" prop="releasetime">
-                    <el-date-picker v-model="releaseTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
+                <el-col :span="10">
+                  <el-form-item label-width="120px" label="发布时间:" class="postInfo-container-item" prop="displayTime">
+                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期与时间" />
                   </el-form-item>
                 </el-col>
 
@@ -42,17 +35,17 @@
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="110px" label="书籍信息:" prop="bookinformation">
+        <el-form-item style="margin-bottom: 40px;" label-width="75px" label="文章摘要:">
           <el-input v-model="postForm.bookinformation" :rows="1" type="textarea" autosize placeholder="请输入摘要内容" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }} 字</span>
         </el-form-item>
 
-        <el-form-item prop="introduction" style="margin-bottom: 30px;">
+        <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="postForm.introduction" :height="400" />
         </el-form-item>
 
-        <el-form-item prop="picture" style="margin-bottom: 30px;" label="封图:">
-          <Upload v-model="postForm.picture" />
+        <el-form-item prop="picture" style="margin-bottom: 30px;" label="文章图片:">
+          <Upload v-model="postForm.coverimage" />
         </el-form-item>
       </div>
     </el-form>
@@ -66,22 +59,21 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
-// import { uploadPicture } from '@/api/file'
+import { fetchPublicityDetailById, addPublicity, updatePublicity } from '@/api/publicity'
 import Warning from './Warning'
 
 const defaultForm = {
   title: '', // 文章题目
   introduction: '', // 文章内容
   bookinformation: '', // 文章摘要
-  picture: '', // 文章图片
-  releasetime: new Date(), // 发布时间
+  coverimage: '', // 文章图片
+  releasetime: new Date(),
   isrelease: 0,
   id: undefined
 }
 
 export default {
-  name: 'LecturesDetail',
+  name: 'ArticleDetail',
   components: { Tinymce, MDinput, Upload, Sticky, Warning },
   props: {
     isEdit: {
@@ -107,45 +99,30 @@ export default {
       loading: false,
       rules: {
         title: [{ validator: validateRequire }],
-        bookinformation: [{ validator: validateRequire }],
-        introduction: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }],
         picture: [{ validator: validateRequire }]
       },
       statusMap: ['draft', 'published', 'deleted'],
-      catalogOptions: ['讲座', '活动'],
+      catalogOptions: ['新闻', '公告', '购买', '试用', '讲座', '活动'],
       tempRoute: {},
-      release_time: new Date(),
-      lecture_time: new Date()
+      display_time: new Date()
     }
   },
   computed: {
     contentShortLength() {
       return this.postForm.bookinformation.length
     },
-    releaseTime: {
+    displayTime: {
       // set and get is useful when the data
       // returned by the back end api is different from the front end
       // back end return => "2013-06-25 06:59:25"
       // front end need timestamp => 1372114765000
       get() {
-        return (+new Date(this.release_time))
+        return (+new Date(this.display_time))
       },
       set(val) {
-        this.release_time = new Date(val)
-        this.postForm.releasetime = this.release_time
-      }
-    },
-    lectureTime: {
-      // set and get is useful when the data
-      // returned by the back end api is different from the front end
-      // back end return => "2013-06-25 06:59:25"
-      // front end need timestamp => 1372114765000
-      get() {
-        return (+new Date(this.lecture_time))
-      },
-      set(val) {
-        this.lecture_time = new Date(val)
-        this.postForm.lecturetime = this.lecture_time
+        this.display_time = new Date(val)
+        this.postForm.releasetime = this.display_time
       }
     }
   },
@@ -154,6 +131,7 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
     }
+    this.display_time = this.postForm.releasetime
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -161,12 +139,11 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchNewsDetailById(id).then(response => {
-        this.postForm = response.data.news
-        console.log(response.data.news)
-        this.postForm.releasetime = new Date(response.data.news.releasetime)
-        this.release_time = this.postForm.releasetime
-        this.lecture_time = this.postForm.lectureTime
+      fetchPublicityDetailById(id).then(response => {
+        this.postForm = response.data.recommend
+
+        this.postForm.releasetime = new Date(response.data.recommend.releasetime)
+        this.display_time = this.postForm.releasetime
         // just for test
         // this.postForm.title += `   Article Id:${this.postForm.id}`
         // this.postForm.remark += `   Article Id:${this.postForm.id}`
@@ -182,7 +159,7 @@ export default {
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm(isrelease) {
-      console.log(this.postForm)
+      // console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           // this.loading = true
@@ -191,10 +168,8 @@ export default {
           // })
 
           this.postForm.isrelease = isrelease
-          delete this.postForm['createtime']
-          delete this.postForm['updatetime']
           if (this.isEdit) {
-            updateNews(this.postForm).then(response => {
+            updatePublicity(this.postForm).then(response => {
               console.log(response)
               this.$notify({
                 title: '成功',
@@ -205,7 +180,7 @@ export default {
               this.loading = false
             })
           } else {
-            addNews(this.postForm).then(response => {
+            addPublicity(this.postForm).then(response => {
               console.log(response)
               this.$notify({
                 title: '成功',
