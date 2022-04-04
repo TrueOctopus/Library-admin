@@ -1,12 +1,25 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:02
- * @LastEditTime: 2022-04-04 10:27:55
+ * @LastEditTime: 2022-04-04 10:58:55
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-input v-model="listQuery.title" placeholder="标题" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.catalog" placeholder="类型" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in catalogOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.display_name" />
+      </el-select>
+      <el-select v-model="listQuery.isrelease" placeholder="文章状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in statusOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
+    </div>
+
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
@@ -76,7 +89,7 @@
 </template>
 
 <script>
-import { fetchLecturesList } from '@/api/lectures'
+import { fetchLecturesList, searchLectures } from '@/api/lectures'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -103,8 +116,22 @@ export default {
       status: ['草稿', '发布', '删除'],
       listQuery: {
         pageNo: 1,
-        pageSize: 20
-      }
+        pageSize: 20,
+        isrelease: undefined,
+        catalog: '',
+        title: '',
+        lecturetime: '1999/1/1',
+        releasetime: '1999/1/1'
+      },
+      catalogOptions: [
+        { key: 'lecture', display_name: '讲座' },
+        { key: 'activity', display_name: '活动' }
+      ],
+      statusOptions: [
+        { key: '0', display_name: '草稿' },
+        { key: '1', display_name: '发布' }
+        // { key: '2', display_name: '已删除' }
+      ]
     }
   },
   created() {
@@ -114,7 +141,18 @@ export default {
     getList() {
       this.listLoading = true
       fetchLecturesList(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
+        this.list = response.data.pageinfo.list
+        this.total = response.data.pageinfo.total
+        this.listLoading = false
+      })
+    },
+
+    handleFilter() {
+      this.listLoading = true
+      // console.log(this.listQuery)
+      searchLectures(this.listQuery).then(response => {
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false

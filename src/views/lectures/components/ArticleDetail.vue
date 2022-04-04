@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-03 08:47:17
- * @LastEditTime: 2022-04-04 10:30:14
+ * @LastEditTime: 2022-04-04 10:54:28
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -80,7 +80,6 @@ import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchLecturesDetailById, updateLectures, addLectures } from '@/api/lectures'
-// import { uploadPicture } from '@/api/file'
 import Warning from './Warning'
 
 const defaultForm = {
@@ -177,11 +176,12 @@ export default {
   methods: {
     fetchData(id) {
       fetchLecturesDetailById(id).then(response => {
-        this.postForm = response.data.news
-        console.log(response.data.news)
-        this.postForm.releasetime = new Date(response.data.news.releasetime)
+        // console.log(response)
+        this.postForm = response.data.lecture
+        this.postForm.releasetime = new Date(response.data.lecture.releasetime)
+        this.postForm.lecturetime = new Date(response.data.lecture.lecturetime)
         this.release_time = this.postForm.releasetime
-        this.lecture_time = this.postForm.lectureTime
+        this.lecture_time = this.postForm.lecturetime
         // just for test
         // this.postForm.title += `   Article Id:${this.postForm.id}`
         // this.postForm.remark += `   Article Id:${this.postForm.id}`
@@ -197,7 +197,7 @@ export default {
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm(isrelease) {
-      console.log(this.postForm)
+      // console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           // this.loading = true
@@ -210,7 +210,7 @@ export default {
           delete this.postForm['updatetime']
           if (this.isEdit) {
             updateLectures(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',
@@ -221,7 +221,7 @@ export default {
             })
           } else {
             addLectures(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',

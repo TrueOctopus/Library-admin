@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:23
- * @LastEditTime: 2022-04-04 10:29:35
+ * @LastEditTime: 2022-04-04 10:58:44
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -12,6 +12,14 @@ export function fetchLecturesList({ pageNo, pageSize }) {
     url: '/lectureBackstage/lectureSearch',
     method: 'get',
     params: { pageNo, pageSize }
+  })
+}
+
+export function searchLectures(params) {
+  return request({
+    url: '/lectureBackstage/lectureSearch',
+    method: 'get',
+    params
   })
 }
 

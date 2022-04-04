@@ -205,13 +205,13 @@ export const asyncRoutes = [
     children: [
       {
         path: 'create',
-        component: () => import('@/views/article/create'),
+        component: () => import('@/views/news/create'),
         name: 'CreateArticle',
         meta: { title: '新建文章', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
-        component: () => import('@/views/article/edit'),
+        component: () => import('@/views/news/edit'),
         name: 'EditArticle',
         meta: { title: '编辑文章', noCache: true, activeMenu: '/announcement/newslist' },
         hidden: true
