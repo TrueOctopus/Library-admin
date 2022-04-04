@@ -201,7 +201,7 @@ export const asyncRoutes = [
     path: '/announcement',
     component: Layout,
     redirect: '/announcement/newslist',
-    meta: { title: '文章管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '新闻公告管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'create',
@@ -221,50 +221,8 @@ export const asyncRoutes = [
         name: 'newslist',
         component: () => import('@/views/news/list'),
         meta: { title: '新闻管理', icon: 'table' }
-      },
-
-      {
-        path: 'service',
-        name: 'service',
-        component: () => import('@/views/table/index'),
-        meta: { title: '读者服务', icon: 'table' },
-        children: [
-          {
-            path: 'opentime',
-            name: 'opentime',
-            component: () => import('@/views/table/index'),
-            meta: { title: '开馆时间', icon: 'table' }
-          },
-
-          {
-            path: 'distribution',
-            name: 'distribution',
-            component: () => import('@/views/table/index'),
-            meta: { title: '馆藏分布', icon: 'table' }
-          },
-
-          {
-            path: 'borrowService',
-            name: 'borrowService',
-            component: () => import('@/views/table/index'),
-            meta: { title: '借阅服务', icon: 'table' }
-          },
-
-          {
-            path: 'reserve',
-            name: 'reserve',
-            component: () => import('@/views/table/index'),
-            meta: { title: '预约服务', icon: 'table' }
-          },
-
-          {
-            path: 'donation',
-            name: 'donation',
-            component: () => import('@/views/table/index'),
-            meta: { title: '捐献', icon: 'table' }
-          }
-        ]
       }
+
     ]
   },
 
@@ -325,23 +283,77 @@ export const asyncRoutes = [
   },
 
   {
-    path: '/page',
+    path: '/pages',
     component: Layout,
-    redirect: '/page/pictures',
+    redirect: '/pages/pageList',
     meta: { title: '页面管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
     children: [
       {
+        path: 'pageList',
+        name: 'pageList',
+        component: () => import('@/views/pages/list'),
+        meta: { title: '页面一览', icon: 'table' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/pages/edit'),
+        name: 'EditPage',
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/pages/pageList' },
+        hidden: true
+      },
+      {
+        path: 'service',
+        name: 'service',
+        meta: { title: '读者服务', icon: 'table' },
+        children: [
+          {
+            path: 'opentime',
+            name: 'opentime',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '开馆时间', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'distribution',
+            name: 'distribution',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '馆藏分布', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'borrowService',
+            name: 'borrowService',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '借阅服务', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'reserve',
+            name: 'reserve',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '预约服务', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'donation',
+            name: 'donation',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '捐献', icon: 'table', noCache: true }
+          }
+        ]
+      },
+      {
         path: 'pictures',
         name: 'pictures',
-        component: () => import('@/views/table/index'),
-        meta: { title: '图片管理', icon: 'table' }
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '图片管理', icon: 'table', noCache: true }
       },
 
       {
         path: 'bottom',
         name: 'bottom',
-        component: () => import('@/views/table/index'),
-        meta: { title: '底部栏', icon: 'table' }
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '底部栏', icon: 'table', noCache: true }
       }
     ]
   },
