@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-01 14:45:18
+ * @LastEditTime: 2022-04-04 09:04:05
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -84,7 +84,7 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="temp.email" />
         </el-form-item>
-        <el-form-item v-show="dialogStatus==='create'" label="密码" prop="password">
+        <el-form-item v-if="dialogStatus==='create'" label="密码" prop="password">
           <el-input v-model="temp.password" />
         </el-form-item>
         <el-form-item label="权限" prop="jurisdiction">
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { fetchUserList, addUser, userUpdate, deleteUserById } from '@/api/user'
+import { fetchUserList, addUser, userUpdate, deleteUserById, searchUser } from '@/api/user'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -169,7 +169,7 @@ export default {
     fetchData() {
       this.listLoading = true
       fetchUserList(this.listQuery).then(response => {
-        // console.log(response.data.pageinfo)
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
@@ -185,8 +185,9 @@ export default {
     },
     handleFilter() {
       this.listLoading = true
-      fetchUserList(this.listQuery).then(response => {
-        console.log(response.data.pageinfo)
+      // console.log('this.listQuery', this.listQuery)
+      searchUser(this.listQuery).then(response => {
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false

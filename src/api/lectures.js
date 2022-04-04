@@ -1,23 +1,23 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:23
- * @LastEditTime: 2022-04-02 20:29:20
+ * @LastEditTime: 2022-04-04 10:29:35
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import request from '@/utils/request'
 
-export function fetchLecturesList() {
+export function fetchLecturesList({ pageNo, pageSize }) {
   return request({
-    url: '/lectureBackstage/lectureList',
-    method: 'get'
-    // params: { pageNo, pageSize }
+    url: '/lectureBackstage/lectureSearch',
+    method: 'get',
+    params: { pageNo, pageSize }
   })
 }
 
 export function fetchLecturesDetailById(id) {
   return request({
-    url: '/lectureBackstage/lectureList/one',
+    url: '/lectureBackstage/lectureSearch',
     method: 'get',
     params: { id }
   })

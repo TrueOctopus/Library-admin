@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-04-01 10:04:31
+ * @LastEditTime: 2022-04-04 08:15:41
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -27,7 +27,7 @@ export function getInfo(token) {
 
 export function fetchUserList({ pageNo, pageSize }) {
   return request({
-    url: '/userBackstage/userlist',
+    url: '/userBackstage/userinfo',
     method: 'get',
     params: { pageNo, pageSize }
   })
@@ -51,7 +51,7 @@ export function deleteUserById(userId) {
 
 export function addUser(data) {
   return request({
-    url: '/userAction/register',
+    url: '/userBackstage/addAdministrator',
     method: 'post',
     data
   })
@@ -64,18 +64,11 @@ export function userUpdate(data) {
   })
 }
 
-export function fetchUserByName({ pageNo, pageSize, search }) {
+export function searchUser(params) {
   return request({
-    url: '/userBackstage/searchByName',
+    url: '/userBackstage/userinfo',
     method: 'get',
-    params: { pageNo, pageSize, search }
+    params
   })
 }
 
-export function fetchUserByJurisdiction({ pageNo, pageSize, jurisdiction }) {
-  return request({
-    url: '/userBackstage/searchByJurisdiction',
-    method: 'get',
-    params: { pageNo, pageSize, jurisdiction }
-  })
-}

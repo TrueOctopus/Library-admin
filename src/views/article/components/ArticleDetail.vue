@@ -150,7 +150,7 @@ export default {
     fetchData(id) {
       fetchNewsDetailById(id).then(response => {
         this.postForm = response.data.news
-        console.log(response.data.news)
+        // console.log(response)
         this.postForm.releasetime = new Date(response.data.news.releasetime)
         this.display_time = this.postForm.releasetime
         // just for test
@@ -168,7 +168,7 @@ export default {
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm(isrelease) {
-      console.log(this.postForm)
+      // console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           // this.loading = true

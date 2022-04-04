@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:02
- * @LastEditTime: 2022-04-03 08:31:05
+ * @LastEditTime: 2022-04-04 10:27:55
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { fetchLecturesList } from '@/api/news'
+import { fetchLecturesList } from '@/api/lectures'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -113,10 +113,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchLecturesList().then(response => {
+      fetchLecturesList(this.listQuery).then(response => {
         console.log(response)
-        // this.list = response.data.news.list
-        // this.total = response.data.news.total
+        this.list = response.data.pageinfo.list
+        this.total = response.data.pageinfo.total
         this.listLoading = false
       })
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-03 08:47:17
- * @LastEditTime: 2022-04-03 09:12:04
+ * @LastEditTime: 2022-04-04 10:30:14
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -79,7 +79,7 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
+import { fetchLecturesDetailById, updateLectures, addLectures } from '@/api/lectures'
 // import { uploadPicture } from '@/api/file'
 import Warning from './Warning'
 
@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchNewsDetailById(id).then(response => {
+      fetchLecturesDetailById(id).then(response => {
         this.postForm = response.data.news
         console.log(response.data.news)
         this.postForm.releasetime = new Date(response.data.news.releasetime)
@@ -209,7 +209,7 @@ export default {
           delete this.postForm['createtime']
           delete this.postForm['updatetime']
           if (this.isEdit) {
-            updateNews(this.postForm).then(response => {
+            updateLectures(this.postForm).then(response => {
               console.log(response)
               this.$notify({
                 title: '成功',
@@ -220,7 +220,7 @@ export default {
               this.loading = false
             })
           } else {
-            addNews(this.postForm).then(response => {
+            addLectures(this.postForm).then(response => {
               console.log(response)
               this.$notify({
                 title: '成功',

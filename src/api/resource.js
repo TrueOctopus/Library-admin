@@ -1,20 +1,27 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-30 08:52:27
- * @LastEditTime: 2022-04-01 08:36:59
+ * @LastEditTime: 2022-04-04 09:09:50
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import request from '@/utils/request'
 
-export function fetchDatabaseList(params) {
+export function fetchDatabaseList({ pageNo, pageSize }) {
+  return request({
+    url: '/databaseBackstage/databaseList',
+    method: 'get',
+    params: { pageNo, pageSize }
+  })
+}
+
+export function searchDatabase(params) {
   return request({
     url: '/databaseBackstage/databaseList',
     method: 'get',
     params
   })
 }
-
 export function updateDatabaseList(data) {
   return request({
     url: '/databaseBackstage/databaseList/update',

@@ -271,7 +271,7 @@ export const asyncRoutes = [
   {
     path: '/lectures',
     component: Layout,
-    redirect: '/lectures/list',
+    redirect: '/lectures/lecturesList',
     meta: { title: '活动讲座', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
     children: [
       {
@@ -299,7 +299,7 @@ export const asyncRoutes = [
   {
     path: '/publicity',
     component: Layout,
-    redirect: '/publicity/list',
+    redirect: '/publicity/publicityList',
     meta: { title: '阅读推广', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
     children: [
       {

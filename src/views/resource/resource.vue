@@ -1,15 +1,15 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-01 09:55:52
+ * @LastEditTime: 2022-04-04 09:23:37
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="资源名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.type" placeholder="资源类型" clearable class="filter-item" style="width: 130px">
+      <el-input v-model="listQuery.urlname" placeholder="资源名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.types" placeholder="资源类型" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in resourceTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.display_name" />
       </el-select>
       <el-select v-model="listQuery.genre" placeholder="资源类型" clearable class="filter-item" style="width: 130px">
@@ -49,12 +49,12 @@
           <span>{{ scope.row.urladdress }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="资源类型" width="110" align="center">
+      <el-table-column label="资源类型" width="220" align="center">
         <template slot-scope="scope">
           <span v-for="type in scope.row.types" :key="type">{{ type }} </span>
         </template>
       </el-table-column>
-      <el-table-column label="资源类别" width="110" align="center">
+      <el-table-column label="资源类别" width="100" align="center">
         <template slot-scope="scope">
           {{ scope.row.genre }}
         </template>
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { fetchDatabaseList, insertDatabaseList, deleteDatabaseList, updateDatabaseList } from '@/api/resource'
+import { fetchDatabaseList, insertDatabaseList, deleteDatabaseList, updateDatabaseList, searchDatabase } from '@/api/resource'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -137,8 +137,8 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        type: '',
-        title: '',
+        types: '',
+        urlname: '',
         genre: ''
       },
       temp: {
@@ -185,16 +185,14 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchDatabaseList({
-        'pageNo': this.listQuery.pageNo,
-        'pageSize': this.listQuery.pageSize
-      }).then(response => {
-        const list = response.data.pageInfo.list
+      fetchDatabaseList(this.listQuery).then(response => {
+        // console.log(response)
+        const list = response.data.pageinfo.list
         list.forEach(ele => {
-          ele.types = ele.types.split('|')
+          if (ele.types) ele.types = ele.types.split('|')
         })
         this.list = list
-        this.total = response.data.pageInfo.list.length
+        this.total = response.data.pageinfo.list.length
         this.listLoading = false
       })
     },
@@ -209,8 +207,10 @@ export default {
     },
     handleFilter() {
       this.listLoading = true
-      fetchDatabaseList(this.listQuery).then(response => {
-        const list = response.data.pageInfo.list
+      // console.log(this.listQuery)
+      searchDatabase(this.listQuery).then(response => {
+        // console.log(response)
+        const list = response.data.pageinfo.list
         list.forEach(ele => {
           ele.types = ele.types.split('|')
         })
