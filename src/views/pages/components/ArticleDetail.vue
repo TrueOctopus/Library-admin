@@ -46,7 +46,7 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchPageDetailById, updatePages, addPages } from '@/api/pages'
+import { fetchPageDetailById, fetchPageByCatalog, updatePages, addPages } from '@/api/pages'
 // import { uploadPicture } from '@/api/file'
 import Warning from './Warning'
 
@@ -95,7 +95,8 @@ export default {
     console.log('this.$route.meta', this.$route.meta)
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      if (id) this.fetchData(id)
+      else this.fetchDataByCatalog(this.$route.meta.title)
     }
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -105,8 +106,23 @@ export default {
   methods: {
     fetchData(id) {
       fetchPageDetailById(id).then(response => {
-        console.log(response)
+        // console.log(response)
         this.postForm = response.data.text
+        // just for test
+        // this.postForm.title += `   Article Id:${this.postForm.id}`
+        // this.postForm.remark += `   Article Id:${this.postForm.id}`
+
+        // set page title
+        this.setPageTitle()
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    fetchDataByCatalog(catalog) {
+      fetchPageByCatalog(catalog).then(response => {
+        // console.log(response)
+        this.postForm = response.data.pageinfo.list[0]
+        // console.log('this.postForm', this.postForm)
         // just for test
         // this.postForm.title += `   Article Id:${this.postForm.id}`
         // this.postForm.remark += `   Article Id:${this.postForm.id}`
@@ -128,7 +144,7 @@ export default {
         delete this.postForm['updatetime']
         if (this.isEdit) {
           updatePages(this.postForm).then(response => {
-            console.log(response)
+            // console.log(response)
             this.$notify({
               title: '成功',
               message: '发布文章成功',
@@ -139,7 +155,7 @@ export default {
           })
         } else {
           addPages(this.postForm).then(response => {
-            console.log(response)
+            // console.log(response)
             this.$notify({
               title: '成功',
               message: '添加文章成功',

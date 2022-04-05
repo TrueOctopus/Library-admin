@@ -295,6 +295,12 @@ export const asyncRoutes = [
         meta: { title: '页面一览', icon: 'table' }
       },
       {
+        path: 'create',
+        component: () => import('@/views/pages/create'),
+        name: 'CreatePages',
+        meta: { title: '新建文章', icon: 'edit', roles: ['admin'] }
+      },
+      {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/pages/edit'),
         name: 'EditPage',
@@ -304,6 +310,7 @@ export const asyncRoutes = [
       {
         path: 'service',
         name: 'service',
+        component: () => import('@/views/pages/edit'),
         meta: { title: '读者服务', icon: 'table' },
         children: [
           {
@@ -324,14 +331,51 @@ export const asyncRoutes = [
             path: 'borrowService',
             name: 'borrowService',
             component: () => import('@/views/pages/edit'),
-            meta: { title: '借阅服务', icon: 'table', noCache: true }
+            meta: { title: '借阅服务', icon: 'table', noCache: true },
+            children: [
+              {
+                path: 'rule',
+                name: 'rule',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '借阅规则', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'borrowProcess',
+                name: 'borrowProcess',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '借阅流程', icon: 'table', noCache: true }
+              }
+            ]
           },
 
           {
             path: 'reserve',
             name: 'reserve',
             component: () => import('@/views/pages/edit'),
-            meta: { title: '预约服务', icon: 'table', noCache: true }
+            meta: { title: '预约服务', icon: 'table', noCache: true },
+            children: [
+              {
+                path: 'seatOrder',
+                name: 'seatOrder',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '座位预约', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'rule',
+                name: 'rule',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '研修室预约', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'borrowProcess',
+                name: 'borrowProcess',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '讲座预约', icon: 'table', noCache: true }
+              }
+            ]
           },
 
           {

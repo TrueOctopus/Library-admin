@@ -1,13 +1,15 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-04-04 16:03:51
- * @LastEditTime: 2022-04-04 16:20:34
+ * @LastEditTime: 2022-04-05 08:43:58
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import request from '@/utils/request'
 
-export function fetchPageByCatalog({ pageNo, pageSize, catalog }) {
+export function fetchPageByCatalog(catalog) {
+  const pageNo = 1
+  const pageSize = 1
   return request({
     url: '/backstage/text/recommendSearch',
     method: 'get',
