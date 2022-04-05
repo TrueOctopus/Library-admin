@@ -307,6 +307,50 @@ export const asyncRoutes = [
         meta: { title: '编辑文章', noCache: true, activeMenu: '/pages/pageList' },
         hidden: true
       },
+
+      {
+        path: 'introduction',
+        name: 'introduction',
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '本馆概况', icon: 'table' }
+      },
+
+      {
+        path: 'resouce',
+        name: 'resouce',
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '资源', icon: 'table' },
+        children: [
+          {
+            path: 'collection',
+            name: 'collection',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '馆藏目录', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'characteristic',
+            name: 'characteristic',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '特色资源', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'delivery',
+            name: 'delivery',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '文献传递', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'offcampus',
+            name: 'offcampus',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '校外访问', icon: 'table', noCache: true }
+          }
+        ]
+      },
+
       {
         path: 'service',
         name: 'service',
@@ -383,6 +427,50 @@ export const asyncRoutes = [
             name: 'donation',
             component: () => import('@/views/pages/edit'),
             meta: { title: '捐献', icon: 'table', noCache: true }
+          }
+        ]
+      },
+
+      {
+        path: 'reading',
+        name: 'reading',
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '阅读推广', icon: 'table' },
+        children: [
+          {
+            path: 'collection',
+            name: 'collection',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '馆藏目录', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'recommendedReading',
+            name: 'recommendedReading',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '图书推荐', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'bookReport',
+            name: 'bookReport',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '新书通报', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'mainActivity',
+            name: 'mainActivity',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '主题活动', icon: 'table', noCache: true },
+            children: [
+              {
+                path: 'readingMonth',
+                name: 'readingMonth',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '读书月', icon: 'table', noCache: true }
+              }
+            ]
           }
         ]
       },
