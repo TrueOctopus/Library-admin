@@ -162,14 +162,14 @@ export const asyncRoutes = [
       {
         path: 'userlist',
         name: 'userlist',
-        component: () => import('@/views/user/readerList.vue'),
+        component: () => import('@/views/user/readerList'),
         meta: { title: '读者列表', icon: 'user' }
       },
 
       {
-        path: 'teacherlist',
-        name: 'teacherlist',
-        component: () => import('@/views/table/index'),
+        path: 'stafflist',
+        name: 'stafflist',
+        component: () => import('@/views/staff/staffList'),
         meta: { title: '教职工读者证列表', icon: 'user' }
       }
     ]
@@ -334,8 +334,8 @@ export const asyncRoutes = [
             meta: { title: '借阅服务', icon: 'table', noCache: true },
             children: [
               {
-                path: 'rule',
-                name: 'rule',
+                path: 'borrowRule',
+                name: 'borrowRule',
                 component: () => import('@/views/pages/edit'),
                 meta: { title: '借阅规则', icon: 'table', noCache: true }
               },
@@ -363,15 +363,15 @@ export const asyncRoutes = [
               },
 
               {
-                path: 'rule',
-                name: 'rule',
+                path: 'labOrder',
+                name: 'labOrder',
                 component: () => import('@/views/pages/edit'),
                 meta: { title: '研修室预约', icon: 'table', noCache: true }
               },
 
               {
-                path: 'borrowProcess',
-                name: 'borrowProcess',
+                path: 'lectureOrder',
+                name: 'lectureOrder',
                 component: () => import('@/views/pages/edit'),
                 meta: { title: '讲座预约', icon: 'table', noCache: true }
               }
@@ -386,12 +386,12 @@ export const asyncRoutes = [
           }
         ]
       },
-      {
-        path: 'pictures',
-        name: 'pictures',
-        component: () => import('@/views/pages/edit'),
-        meta: { title: '图片管理', icon: 'table', noCache: true }
-      },
+      // {
+      //   path: 'pictures',
+      //   name: 'pictures',
+      //   component: () => import('@/views/pages/edit'),
+      //   meta: { title: '图片管理', icon: 'table', noCache: true }
+      // },
 
       {
         path: 'bottom',

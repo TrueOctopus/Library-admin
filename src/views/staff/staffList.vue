@@ -1,18 +1,18 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-05 09:41:31
+ * @LastEditTime: 2022-04-05 09:50:13
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.username" placeholder="用户名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.email" placeholder="邮箱" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.jurisdiction" placeholder="权限" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in jurisdictionOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
+      <el-input v-model="listQuery.workNumber" placeholder="职工号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.readerIdNumber" placeholder="读者证号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.worker" placeholder="职工名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.department" placeholder="部门" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -37,29 +37,24 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" width="150" align="center">
+      <el-table-column label="职工号" width="150" align="center">
         <template slot-scope="scope">
-          {{ scope.row.username }}
+          {{ scope.row.workNumber }}
         </template>
       </el-table-column>
-      <el-table-column label="邮箱" align="center">
+      <el-table-column label="读者证号" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.readerIdNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="职工名" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.createtime }}</span>
+          <span>{{ scope.row.worker }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="更新时间" align="center">
+      <el-table-column label="部门" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.updatetime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="权限" width="110" align="center">
-        <template slot-scope="scope">
-          {{ jurisdictionOptions[scope.row.jurisdiction].display_name }}({{ jurisdictionOptions[scope.row.jurisdiction].key }})
+          <span>{{ scope.row.department }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -78,19 +73,17 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="temp.username" />
+        <el-form-item label="职工名" prop="worker">
+          <el-input v-model="temp.worker" />
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="temp.email" />
+        <el-form-item label="姓名" prop="workNumber">
+          <el-input v-model="temp.workNumber" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='create'" label="密码" prop="password">
-          <el-input v-model="temp.password" />
+        <el-form-item label="读者证号" prop="readerIdNumber">
+          <el-input v-model="temp.readerIdNumber" />
         </el-form-item>
-        <el-form-item label="权限" prop="jurisdiction">
-          <el-select v-model="temp.jurisdiction" class="filter-item" placeholder="点击选择">
-            <el-option v-for="item in jurisdictionOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-          </el-select>
+        <el-form-item label="部门" prop="department">
+          <el-input v-model="temp.department" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,7 +99,7 @@
 </template>
 
 <script>
-import { fetchUserList, addUser, userUpdate, deleteUserById, searchUser } from '@/api/user'
+import { fetchStaffList, addStaff, staffUpdate, deleteStaffById, searchStaff } from '@/api/staff'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -130,15 +123,16 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        username: '',
-        email: '',
-        jurisdiction: ''
+        department: '',
+        readerIdNumber: '',
+        workNumber: '',
+        worker: ''
       },
       temp: {
-        username: '',
-        email: '',
-        jurisdiction: 0,
-        password: ''
+        readerIdNumber: '',
+        workNumber: '',
+        worker: '',
+        department: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -147,19 +141,11 @@ export default {
         create: '创建'
       },
       rules: {
-        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-        email: [{ type: 'email', required: true, message: '输入格式错误或不能为空', trigger: 'blur' }],
-        jurisdiction: [{ required: true, message: '权限设置不能为空', trigger: 'change' }],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-          { min: 6, message: '长度至少需要 6 个字符', trigger: 'blur' }
-        ]
-      },
-      jurisdictionOptions: [
-        { key: '0', display_name: '普通用户' },
-        { key: '1', display_name: '编辑' },
-        { key: '2', display_name: '管理员' }
-      ]
+        department: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
+        readerIdNumber: [{ required: true, message: '读者证号不能为空', trigger: 'blur' }],
+        workNumber: [{ required: true, message: '职工号不能为空', trigger: 'blur' }],
+        worker: [{ required: true, message: '职工名不能为空', trigger: 'blur' }]
+      }
     }
   },
   created() {
@@ -168,8 +154,8 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchUserList(this.listQuery).then(response => {
-        // console.log(response)
+      fetchStaffList(this.listQuery).then(response => {
+        console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
@@ -177,16 +163,16 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        username: '',
-        email: '',
-        jurisdiction: 0,
-        password: ''
+        readerIdNumber: '',
+        workNumber: '',
+        worker: '',
+        department: ''
       }
     },
     handleFilter() {
       this.listLoading = true
       // console.log('this.listQuery', this.listQuery)
-      searchUser(this.listQuery).then(response => {
+      searchStaff(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
@@ -204,7 +190,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addUser(this.temp).then(() => {
+          addStaff(this.temp).then(() => {
             this.fetchData()
             // this.list.unshift(this.temp)
             this.dialogFormVisible = false
@@ -230,10 +216,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const data = this.temp
-          delete data.password
-          delete data.createtime
-          delete data.updatetime
-          userUpdate(data).then(() => {
+          staffUpdate(data).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
@@ -247,7 +230,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteUserById(row.id).then(() => {
+      deleteStaffById(row.id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
         this.$notify({
