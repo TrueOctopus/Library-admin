@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:02
- * @LastEditTime: 2022-04-04 15:23:48
+ * @LastEditTime: 2022-04-05 09:54:24
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -84,7 +84,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="handleFilter" />
   </div>
 </template>
 
