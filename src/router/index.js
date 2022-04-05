@@ -235,8 +235,8 @@ export const asyncRoutes = [
           },
 
           {
-            path: 'characteristic',
-            name: 'characteristic',
+            path: 'characteristicPage',
+            name: 'characteristicPage',
             component: () => import('@/views/pages/edit'),
             meta: { title: '特色资源', icon: 'table', noCache: true }
           },
@@ -343,13 +343,6 @@ export const asyncRoutes = [
         component: () => import('@/views/pages/edit'),
         meta: { title: '阅读推广', icon: 'table' },
         children: [
-          {
-            path: 'collection',
-            name: 'collection',
-            component: () => import('@/views/pages/edit'),
-            meta: { title: '馆藏目录', icon: 'table', noCache: true }
-          },
-
           {
             path: 'recommendedReading',
             name: 'recommendedReading',
