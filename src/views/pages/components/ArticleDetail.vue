@@ -12,15 +12,15 @@
           <Warning />
 
           <el-col :span="12">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.catalog" :maxlength="100" name="name" :disabled="isEdit" required>
+            <el-form-item style="margin-bottom: 40px;" prop="catalog">
+              <MDinput v-model="postForm.catalog" :maxlength="100" name="catalog" :disabled="isEdit" required>
                 页面位置 <span v-show="isEdit" style="color:#c52525">(禁止修改)</span>
               </MDinput>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
+              <MDinput v-model="postForm.title" :maxlength="100" name="title" required>
                 文章标题
               </MDinput>
             </el-form-item>
