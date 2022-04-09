@@ -381,10 +381,32 @@ export const asyncRoutes = [
       // },
 
       {
-        path: 'bottom',
-        name: 'bottom',
+        path: 'comment',
+        name: 'comment',
         component: () => import('@/views/pages/edit'),
-        meta: { title: '底部栏', icon: 'table', noCache: true }
+        meta: { title: '留言板', icon: 'table', noCache: true }
+      }
+
+      // {
+      //   path: 'bottom',
+      //   name: 'bottom',
+      //   component: () => import('@/views/pages/edit'),
+      //   meta: { title: '底部栏', icon: 'table', noCache: true }
+      // }
+    ]
+  },
+
+  {
+    path: '/comment',
+    component: Layout,
+    redirect: '/comment/commentlist',
+    meta: { title: '留言板管理', icon: 'table', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'commentlist',
+        name: 'commentlist',
+        component: () => import('@/views/comment/commentList'),
+        meta: { title: '留言列表', icon: 'table' }
       }
     ]
   },

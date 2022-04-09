@@ -92,7 +92,7 @@ export default {
     }
   },
   created() {
-    console.log('this.$route.meta', this.$route.meta)
+    // console.log('this.$route.meta', this.$route.meta)
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       if (id) this.fetchData(id)
