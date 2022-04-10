@@ -381,10 +381,18 @@ export const asyncRoutes = [
       // },
 
       {
-        path: 'comment',
-        name: 'comment',
+        path: 'commentHub',
+        name: 'commentHub',
         component: () => import('@/views/pages/edit'),
-        meta: { title: '留言板', icon: 'table', noCache: true }
+        meta: { title: '反馈中心', icon: 'table' },
+        children: [
+          {
+            path: 'common',
+            name: 'common',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '常见问题', icon: 'table', noCache: true }
+          }
+        ]
       }
 
       // {
