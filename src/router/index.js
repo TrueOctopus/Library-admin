@@ -198,7 +198,7 @@ export const asyncRoutes = [
         path: 'pageList',
         name: 'pageList',
         component: () => import('@/views/pages/list'),
-        meta: { title: '页面一览', icon: 'table' }
+        meta: { title: '页面一览', icon: 'table', roles: ['admin'] }
       },
       {
         path: 'create',

@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-02 20:16:02
- * @LastEditTime: 2022-04-05 09:54:24
+ * @LastEditTime: 2022-04-11 09:45:40
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -76,10 +76,13 @@
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
           <router-link :to="'/lectures/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">
+            <el-button type="primary" size="mini" icon="el-icon-edit">
               编辑
             </el-button>
           </router-link>
+          <el-button type="danger" size="mini" icon="el-icon-edit" @click="handleDelete(scope.row.id)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -89,7 +92,7 @@
 </template>
 
 <script>
-import { fetchLecturesList, searchLectures } from '@/api/lectures'
+import { fetchLecturesList, searchLectures, deleteLectures } from '@/api/lectures'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -156,6 +159,21 @@ export default {
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
+      })
+    },
+
+    handleDelete(id) {
+      this.listLoading = true
+      deleteLectures(id).then(res => {
+        // console.log(res)
+        this.listLoading = false
+        this.getList()
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     }
   }

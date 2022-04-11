@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-28 10:31:04
- * @LastEditTime: 2022-04-04 10:12:09
+ * @LastEditTime: 2022-04-11 09:35:53
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -57,7 +57,7 @@ export function updateNews(data) {
 
 export function deleteNews(id) {
   return request({
-    url: '/backstage/news/updateNewsAction',
+    url: '/backstage/news/deleteNews',
     method: 'post',
     data: { id }
   })
