@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 19:21:44
- * @LastEditTime: 2022-04-12 19:24:56
+ * @LastEditTime: 2022-04-12 20:38:36
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -21,11 +21,14 @@
     :on-remove="handleRemove"
     :file-list="fileList"
     :before-upload="beforeUpload"
+    multiple
+    :limit="10"
+    :on-exceed="handleExceed"
     list-type="picture"
     name="oneFile"
   >
     <el-button v-waves class="filter-item" type="primary" icon="el-icon-upload">图片上传</el-button>
-    <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件并且不能超过5M</div>
+    <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,并且不能超过5M</div>
   </el-upload>
 </template>
 
@@ -48,11 +51,14 @@ export default {
       // console.log(file)
     },
     beforeUpload(file) {
-      if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.size > 1024 * 1024 * 5) {
-        this.$message.error('只能上传jpg/png/gif文件并且不能超过5M')
+      console.log('before', file)
+      if ((file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') || file.size > 1024 * 1024 * 5) {
+        this.$message.error('只能上传jpg/png/gif文件,并且不能超过5M')
         return false
       }
-      // console.log('before', file)
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     }
   }
 }
