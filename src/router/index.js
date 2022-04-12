@@ -235,6 +235,49 @@ export const asyncRoutes = [
           },
 
           {
+            path: 'databaseGuide',
+            name: 'databaseGuide',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '数据库导航', icon: 'table', noCache: true },
+            children: [
+              {
+                path: 'allresource',
+                name: 'allresource',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '全部资源', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'cnresource',
+                name: 'cnresource',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '中文资源', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'foreignResource',
+                name: 'foreignResource',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '外文资源', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'tryResource',
+                name: 'tryResource',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '试用资源', icon: 'table', noCache: true }
+              },
+
+              {
+                path: 'openResource',
+                name: 'openResource',
+                component: () => import('@/views/pages/edit'),
+                meta: { title: '开放资源', icon: 'table', noCache: true }
+              }
+            ]
+          },
+
+          {
             path: 'characteristicPage',
             name: 'characteristicPage',
             component: () => import('@/views/pages/edit'),
@@ -332,7 +375,7 @@ export const asyncRoutes = [
             path: 'donation',
             name: 'donation',
             component: () => import('@/views/pages/edit'),
-            meta: { title: '捐献', icon: 'table', noCache: true }
+            meta: { title: '捐赠', icon: 'table', noCache: true }
           }
         ]
       },
@@ -373,12 +416,6 @@ export const asyncRoutes = [
           }
         ]
       },
-      // {
-      //   path: 'pictures',
-      //   name: 'pictures',
-      //   component: () => import('@/views/pages/edit'),
-      //   meta: { title: '图片管理', icon: 'table', noCache: true }
-      // },
 
       {
         path: 'commentHub',
@@ -401,6 +438,27 @@ export const asyncRoutes = [
       //   component: () => import('@/views/pages/edit'),
       //   meta: { title: '底部栏', icon: 'table', noCache: true }
       // }
+    ]
+  },
+
+  {
+    path: '/file',
+    component: Layout,
+    redirect: '/file/filelist',
+    meta: { title: '文件/图片管理', icon: 'table', roles: ['admin', 'editor'] },
+    children: [
+      {
+        path: 'upload',
+        name: 'upload',
+        component: () => import('@/views/file/upload'),
+        meta: { title: '文件/图片上传', icon: 'table' }
+      },
+      {
+        path: 'filelist',
+        name: 'filelist',
+        component: () => import('@/views/file/fileList'),
+        meta: { title: '文件列表', icon: 'table' }
+      }
     ]
   },
 

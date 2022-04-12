@@ -67,7 +67,6 @@ import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
-// import { uploadPicture } from '@/api/file'
 import Warning from './Warning'
 
 const defaultForm = {

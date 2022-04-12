@@ -1,7 +1,7 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-03-16 08:44:06
- * @LastEditTime: 2022-04-09 14:35:48
+ * @LastEditTime: 2022-04-12 10:55:07
  * @LastEditors: 郑钊宇
  * @Description:
  */
@@ -56,7 +56,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (!res.ok) {
       Message({
-        message: res.msg || 'Error',
+        message: res.msg || res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
@@ -74,7 +74,7 @@ service.interceptors.response.use(
       //     })
       //   })
       // }
-      return Promise.reject(new Error(res.msg || 'Error'))
+      return Promise.reject(new Error(res.msg || res.message || 'Error'))
     } else {
       return res
     }
@@ -82,7 +82,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: error.message,
+      message: error.msg || error.message,
       type: 'error',
       duration: 5 * 1000
     })
