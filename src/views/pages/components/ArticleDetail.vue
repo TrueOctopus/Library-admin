@@ -140,30 +140,36 @@ export default {
     submitForm() {
       // console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
-        delete this.postForm['createtime']
-        delete this.postForm['updatetime']
-        if (this.isEdit) {
-          updatePages(this.postForm).then(response => {
+        if (valid) {
+          delete this.postForm['createtime']
+          delete this.postForm['updatetime']
+          if (this.isEdit) {
+            updatePages(this.postForm).then(response => {
             // console.log(response)
-            this.$notify({
-              title: '成功',
-              message: '发布文章成功',
-              type: 'success',
-              duration: 2000
+              this.$notify({
+                title: '成功',
+                message: '发布文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
             })
-            this.loading = false
-          })
+          } else {
+            addPages(this.postForm).then(response => {
+            // console.log(response)
+              this.$notify({
+                title: '成功',
+                message: '添加文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
+            })
+          }
         } else {
-          addPages(this.postForm).then(response => {
-            // console.log(response)
-            this.$notify({
-              title: '成功',
-              message: '添加文章成功',
-              type: 'success',
-              duration: 2000
-            })
-            this.loading = false
-          })
+          console.log('提交错误!!')
+          this.loading = false
+          return false
         }
       })
     }
