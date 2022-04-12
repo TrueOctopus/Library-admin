@@ -180,7 +180,7 @@ export default {
           delete this.postForm['updatetime']
           if (this.isEdit) {
             updateNews(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',
@@ -191,7 +191,7 @@ export default {
             })
           } else {
             addNews(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',
