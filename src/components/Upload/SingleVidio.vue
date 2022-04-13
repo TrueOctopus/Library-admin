@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:30:17
- * @LastEditTime: 2022-04-13 09:29:12
+ * @LastEditTime: 2022-04-13 09:38:25
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -34,9 +34,21 @@ export default {
     handleRemove(file, fileList) {
       deleteFileByUuid(file.response.data.newFileName)
       this.fileList = fileList
+      this.$notify({
+        title: '成功',
+        message: '删除成功',
+        type: 'success',
+        duration: 2000
+      })
       // console.log(file, fileList)
     },
     handleImageSuccess(response, file, fileList) {
+      this.$notify({
+        title: '成功',
+        message: response.msg,
+        type: 'success',
+        duration: 2000
+      })
       this.fileList = fileList
       // console.log('Success', response, file, fileList)
       // console.log(file)

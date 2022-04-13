@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 08:59:42
- * @LastEditTime: 2022-04-12 10:59:57
+ * @LastEditTime: 2022-04-13 10:33:33
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button size="mini" type="primary">
+          <el-button size="mini" type="primary" @click="handlePreview(row)">
             查看
           </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(row)">
@@ -68,11 +68,25 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="handleFilter" />
 
+    <el-dialog title="预览" :visible.sync="dialogFormVisible" :before-close="beforeClose">
+      <div v-if="temp.fileType === 'picture'">
+        <h3>原文件名：{{ temp.oldFileName }}</h3>
+        <h3>转储文件名：{{ temp.fileName }}</h3>
+        <img :src="getPic + temp.fileName" alt="图片预览" style="width: 100%">
+      </div>
+      <div v-if="temp.fileType === 'video'">
+        <h3>原文件名：{{ temp.oldFileName }}</h3>
+        <h3>转储文件名：{{ temp.fileName }}</h3>
+        <video :src="getVideo + temp.fileName" controls="controls" style="width: 100%">
+          您的浏览器不支持 video 标签。
+        </video>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchFileList, deleteFileById, searchFile } from '@/api/file'
+import { fetchFileList, deleteFileById, searchFile, getPic, getVideo, download } from '@/api/file'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -83,7 +97,7 @@ export default {
       const typeMap = {
         picture: '图片',
         file: '文件',
-        vidio: '视频'
+        video: '视频'
       }
       return typeMap[type]
     }
@@ -103,8 +117,16 @@ export default {
       fileTypeOptions: [
         { key: 'picture', display_name: '图片' },
         { key: 'file', display_name: '文件' },
-        { key: 'vidio', display_name: '视频' }
-      ]
+        { key: 'video', display_name: '视频' }
+      ],
+      temp: {
+        fileName: '',
+        fileType: '',
+        oldFileName: ''
+      },
+      dialogFormVisible: false,
+      getPic,
+      getVideo
     }
   },
   created() {
@@ -114,7 +136,7 @@ export default {
     fetchData() {
       this.listLoading = true
       fetchFileList(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
@@ -122,7 +144,7 @@ export default {
     },
     handleFilter() {
       this.listLoading = true
-      console.log('this.listQuery', this.listQuery)
+      // console.log('this.listQuery', this.listQuery)
       searchFile(this.listQuery).then(response => {
         console.log(response)
         this.list = response.data.pageinfo.list
@@ -132,8 +154,8 @@ export default {
     },
     handleDelete(row) {
       deleteFileById(row.id).then(() => {
-        this.fetchData()
         this.dialogFormVisible = false
+        this.handleFilter()
         this.$notify({
           title: '成功',
           message: '删除成功',
@@ -141,6 +163,39 @@ export default {
           duration: 2000
         })
       })
+    },
+    handlePreview(row) {
+      switch (row.fileType) {
+        case 'picture':
+          this.dialogFormVisible = true
+          this.temp.fileName = row.fileName
+          this.temp.fileType = row.fileType
+          this.temp.oldFileName = row.oldFileName
+          break
+        case 'file':
+          window.open(download + '?fileName=' + row.fileName)
+          break
+        case 'video':
+          this.dialogFormVisible = true
+          this.temp.fileName = row.fileName
+          this.temp.fileType = row.fileType
+          this.temp.oldFileName = row.oldFileName
+          break
+        default:
+          break
+      }
+      console.log(row)
+    },
+    resetTemp() {
+      this.temp = {
+        fileName: '',
+        fileType: '',
+        oldFileName: ''
+      }
+    },
+    beforeClose() {
+      this.dialogFormVisible = false
+      this.resetTemp()
     }
   }
 }

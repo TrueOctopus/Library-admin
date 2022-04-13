@@ -1,14 +1,15 @@
 /**
  * @Author: 郑钊宇
  * @Date: 2022-04-02 19:04:54
- * @LastEditTime: 2022-04-12 18:31:16
+ * @LastEditTime: 2022-04-13 10:33:31
  * @LastEditors: 郑钊宇
  * @Description:
  */
 import request from '@/utils/request'
 
 export const getPic = process.env.VUE_APP_BASE_API + '/getPhoto/'
-export const getVid = process.env.VUE_APP_BASE_API + '/mp4/'
+export const getVideo = process.env.VUE_APP_BASE_API + '/mp4/'
+export const download = process.env.VUE_APP_BASE_API + '/text/download/'
 
 export function uploadFile(oneFile) {
   return request({
