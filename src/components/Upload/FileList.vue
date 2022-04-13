@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:00:15
- * @LastEditTime: 2022-04-12 20:26:52
+ * @LastEditTime: 2022-04-13 09:28:30
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -11,6 +11,7 @@
     action="http://localhost:8081/fileUpload/uploadFileAction"
     :headers="{'token': $store.getters.token}"
     :on-remove="handleRemove"
+    :on-success="handleImageSuccess"
     multiple
     :limit="10"
     :before-upload="beforeUpload"
@@ -35,7 +36,13 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       deleteFileByUuid(file.response.data.newFileName)
+      this.fileList = fileList
       // console.log(file, fileList)
+    },
+    handleImageSuccess(response, file, fileList) {
+      this.fileList = fileList
+      // console.log('Success', response, file, fileList)
+      // console.log(file)
     },
     handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)

@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:30:17
- * @LastEditTime: 2022-04-12 20:48:21
+ * @LastEditTime: 2022-04-13 09:29:12
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -11,6 +11,7 @@
     action="http://localhost:8081/fileUpload/uploadVideoAction"
     :headers="{'token': $store.getters.token}"
     :on-remove="handleRemove"
+    :on-success="handleImageSuccess"
     :before-upload="beforeUpload"
     :file-list="fileList"
     name="oneFile"
@@ -32,7 +33,13 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       deleteFileByUuid(file.response.data.newFileName)
+      this.fileList = fileList
       // console.log(file, fileList)
+    },
+    handleImageSuccess(response, file, fileList) {
+      this.fileList = fileList
+      // console.log('Success', response, file, fileList)
+      // console.log(file)
     },
     beforeUpload(file) {
       console.log('before', file)

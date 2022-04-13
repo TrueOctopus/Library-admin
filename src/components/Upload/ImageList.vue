@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 19:21:44
- * @LastEditTime: 2022-04-12 20:38:36
+ * @LastEditTime: 2022-04-13 09:27:55
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -45,13 +45,16 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       deleteFileByUuid(file.response.data.newFileName)
-      // console.log(file, fileList)
+      this.fileList = fileList
+      // console.log('remove', file, fileList)
     },
-    handleImageSuccess(file) {
+    handleImageSuccess(response, file, fileList) {
+      this.fileList = fileList
+      // console.log('Success', response, file, fileList)
       // console.log(file)
     },
     beforeUpload(file) {
-      console.log('before', file)
+      // console.log('before', file)
       if ((file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') || file.size > 1024 * 1024 * 5) {
         this.$message.error('只能上传jpg/png/gif文件,并且不能超过5M')
         return false
