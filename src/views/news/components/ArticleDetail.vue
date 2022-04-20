@@ -56,6 +56,12 @@
         </el-form-item>
       </div>
     </el-form>
+
+    <div class="editor-content">附件上传：</div>
+    <div class="editor-content" style="width:40%">
+      <FileList v-model="postForm.appendix" />
+    </div>
+
     <div class="editor-content">文章预览：</div>
     <div class="editor-content" v-html="postForm.content" />
   </div>
@@ -68,6 +74,7 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchNewsDetailById, updateNews, addNews } from '@/api/news'
 import Warning from './Warning'
+import FileList from '@/components/Upload/FileList'
 
 const defaultForm = {
   title: '', // 文章题目
@@ -75,6 +82,7 @@ const defaultForm = {
   remark: '', // 文章摘要
   picture: '', // 文章图片
   catalog: '新闻', // 类型
+  appendix: '', // 附件列表
   releasetime: new Date(),
   isrelease: 0,
   id: undefined
@@ -82,7 +90,7 @@ const defaultForm = {
 
 export default {
   name: 'ArticleDetail',
-  components: { Tinymce, MDinput, Upload, Sticky, Warning },
+  components: { Tinymce, MDinput, Upload, Sticky, Warning, FileList },
   props: {
     isEdit: {
       type: Boolean,

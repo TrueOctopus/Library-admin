@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:00:15
- * @LastEditTime: 2022-04-13 09:38:12
+ * @LastEditTime: 2022-04-20 11:12:42
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -28,9 +28,23 @@
 import { deleteFileByUuid } from '@/api/file'
 
 export default {
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       fileList: []
+    }
+  },
+  watch: {
+    value(val) {
+      this.fileList = JSON.parse(val)
+    },
+    fileList(val) {
+      this.$emit('input', JSON.stringify(val))
     }
   },
   methods: {
@@ -53,7 +67,7 @@ export default {
         type: 'success',
         duration: 2000
       })
-      // console.log('Success', response, file, fileList)
+      console.log('Success', file, fileList)
       // console.log(file)
     },
     handleExceed(files, fileList) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 08:59:42
- * @LastEditTime: 2022-04-13 10:33:33
+ * @LastEditTime: 2022-04-20 10:02:22
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -146,7 +146,7 @@ export default {
       this.listLoading = true
       // console.log('this.listQuery', this.listQuery)
       searchFile(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false
@@ -184,7 +184,7 @@ export default {
         default:
           break
       }
-      console.log(row)
+      // console.log(row)
     },
     resetTemp() {
       this.temp = {
