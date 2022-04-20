@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-03 08:47:17
- * @LastEditTime: 2022-04-04 10:54:28
+ * @LastEditTime: 2022-04-20 19:44:58
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -69,6 +69,12 @@
         </el-form-item>
       </div>
     </el-form>
+
+    <div class="editor-content">附件上传：</div>
+    <div class="editor-content" style="width:40%">
+      <FileList v-model="postForm.appendix" />
+    </div>
+
     <div class="editor-content">文章预览：</div>
     <div class="editor-content" v-html="postForm.content" />
   </div>
@@ -81,6 +87,7 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchLecturesDetailById, updateLectures, addLectures } from '@/api/lectures'
 import Warning from './Warning'
+import FileList from '@/components/Upload/FileList'
 
 const defaultForm = {
   title: '', // 文章题目
@@ -88,6 +95,7 @@ const defaultForm = {
   remark: '', // 文章摘要
   picture: '', // 文章图片
   catalog: '讲座', // 类型
+  appendix: '', // 附件列表
   lecturetime: new Date(), // 举办时间
   releasetime: new Date(), // 发布时间
   isrelease: 0,
@@ -96,7 +104,7 @@ const defaultForm = {
 
 export default {
   name: 'LecturesDetail',
-  components: { Tinymce, MDinput, Upload, Sticky, Warning },
+  components: { Tinymce, MDinput, Upload, Sticky, Warning, FileList },
   props: {
     isEdit: {
       type: Boolean,
