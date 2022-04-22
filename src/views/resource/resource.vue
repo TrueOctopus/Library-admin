@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-05 09:55:20
+ * @LastEditTime: 2022-04-22 12:04:42
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -192,7 +192,7 @@ export default {
           if (ele.types) ele.types = ele.types.split('|')
         })
         this.list = list
-        this.total = response.data.pageinfo.list.length
+        this.total = response.data.pageinfo.total
         this.listLoading = false
       })
     },

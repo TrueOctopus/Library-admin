@@ -97,8 +97,66 @@ export const asyncRoutes = [
       {
         path: 'characteristic',
         name: 'characteristic',
-        component: () => import('@/views/resource/characteristic'),
-        meta: { title: '特色资源管理', icon: 'tab' }
+        meta: { title: '特色资源管理', icon: 'tab' },
+        redirect: '/resource/characteristic/achievement',
+        component: () => import('@/views/resource/characteristic/characteristic'),
+        children: [
+          {
+            path: 'achievement',
+            name: 'achievement',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '成果', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'award',
+            name: 'award',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '成果奖励', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'book',
+            name: 'book',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '书籍', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'meeting',
+            name: 'meeting',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '会议', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'papers',
+            name: 'papers',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '期刊论文', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'patent',
+            name: 'patent',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '专利', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'projectReport',
+            name: 'projectReport',
+            component: () => import('@/views/resource/characteristic/projectReport'),
+            meta: { title: '课题报告', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'technology',
+            name: 'technology',
+            component: () => import('@/views/resource/characteristic/achievement'),
+            meta: { title: '科技成果', icon: 'table', noCache: true }
+          }
+        ]
       }
     ]
   },
