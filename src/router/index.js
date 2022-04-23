@@ -111,35 +111,35 @@ export const asyncRoutes = [
           {
             path: 'award',
             name: 'award',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/award'),
             meta: { title: '成果奖励', icon: 'table', noCache: true }
           },
 
           {
             path: 'book',
             name: 'book',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/book'),
             meta: { title: '书籍', icon: 'table', noCache: true }
           },
 
           {
             path: 'meeting',
             name: 'meeting',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/meeting'),
             meta: { title: '会议', icon: 'table', noCache: true }
           },
 
           {
             path: 'papers',
             name: 'papers',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/papers'),
             meta: { title: '期刊论文', icon: 'table', noCache: true }
           },
 
           {
             path: 'patent',
             name: 'patent',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/patent'),
             meta: { title: '专利', icon: 'table', noCache: true }
           },
 
@@ -153,7 +153,7 @@ export const asyncRoutes = [
           {
             path: 'technology',
             name: 'technology',
-            component: () => import('@/views/resource/characteristic/achievement'),
+            component: () => import('@/views/resource/characteristic/technology'),
             meta: { title: '科技成果', icon: 'table', noCache: true }
           }
         ]

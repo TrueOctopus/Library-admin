@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
- * @Date: 2022-04-22 19:38:51
- * @LastEditTime: 2022-04-23 11:33:37
+ * @Date: 2022-04-22 19:38:57
+ * @LastEditTime: 2022-04-23 11:16:42
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -9,7 +9,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.author" placeholder="作者" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.achievementName" placeholder="成果名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.awardName" placeholder="课题名称或承担项目" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -35,24 +35,34 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="作者" align="center">
+      <el-table-column label="作者" width="110" align="center">
         <template slot-scope="scope">
           {{ scope.row.author }}
         </template>
       </el-table-column>
-      <el-table-column label="成果名称" align="center">
+      <el-table-column label="奖项名称" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.achievementName }}</span>
+          <span>{{ scope.row.awardName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="研究时间" width="110" align="center">
+      <el-table-column label="奖项类别" width="220" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.achievementTime }}</span>
+          <span>{{ scope.row.awardType }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="第一完成单位" align="center">
+      <el-table-column label="奖项等级" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.completeUnit }}</span>
+          <span>{{ scope.row.awardLevel }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="获奖时间" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.awardTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="获得排名" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.awardRank }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -74,14 +84,20 @@
         <el-form-item label="作者" prop="author">
           <el-input v-model="temp.author" />
         </el-form-item>
-        <el-form-item label="成果名称" prop="achievementName">
-          <el-input v-model="temp.achievementName" />
+        <el-form-item label="奖项名称" prop="awardName">
+          <el-input v-model="temp.awardName" />
         </el-form-item>
-        <el-form-item label="研究时间" prop="achievementTime">
-          <el-input v-model="temp.achievementTime" />
+        <el-form-item label="奖项类别" prop="awardType">
+          <el-input v-model="temp.awardType" />
         </el-form-item>
-        <el-form-item label="第一完成单位" prop="completeUnit">
-          <el-input v-model="temp.completeUnit" />
+        <el-form-item label="奖项等级" prop="awardLevel">
+          <el-input v-model="temp.awardLevel" />
+        </el-form-item>
+        <el-form-item label="获奖时间" prop="awardTime">
+          <el-input v-model="temp.awardTime" />
+        </el-form-item>
+        <el-form-item label="获得排名" prop="awardRank">
+          <el-input v-model="temp.awardRank" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,7 +113,7 @@
 </template>
 
 <script>
-import { fetchAchievementList, searchAchievement, addAchievement, deleteAchievement, updateAchievement } from '@/api/characteristic/achievement'
+import { fetchAwardList, searchAward, addAward, deleteAward, updateAward } from '@/api/characteristic/award'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -112,13 +128,15 @@ export default {
         pageNo: 1,
         pageSize: 10,
         author: '',
-        achievementName: ''
+        awardName: ''
       },
       temp: {
         author: '',
-        achievementName: '',
-        achievementTime: '',
-        completeUnit: ''
+        awardName: '',
+        awardType: '',
+        awardLevel: '',
+        awardTime: '',
+        awardRank: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -127,7 +145,7 @@ export default {
         create: '创建'
       },
       rules: {
-        achievementName: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
+        awardName: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
         author: [{ required: true, message: '作者不能为空', trigger: 'blur' }]
       }
     }
@@ -138,7 +156,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchAchievementList(this.listQuery).then(response => {
+      fetchAwardList(this.listQuery).then(response => {
         // console.log(response)
         const list = response.data.pageinfo.list
         this.list = list
@@ -149,15 +167,17 @@ export default {
     resetTemp() {
       this.temp = {
         author: '',
-        achievementName: '',
-        achievementTime: '',
-        completeUnit: ''
+        awardName: '',
+        awardType: '',
+        awardLevel: '',
+        awardTime: '',
+        awardRank: undefined
       }
     },
     handleFilter() {
       this.listLoading = true
       // console.log(this.listQuery)
-      searchAchievement(this.listQuery).then(response => {
+      searchAward(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
@@ -175,7 +195,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addAchievement(this.temp).then(() => {
+          addAward(this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
@@ -199,7 +219,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          updateAchievement(this.temp).then(() => {
+          updateAward(this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
@@ -213,7 +233,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteAchievement(row.id).then(() => {
+      deleteAward(row.id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
         this.$notify({
