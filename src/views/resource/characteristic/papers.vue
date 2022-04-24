@@ -1,14 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-22 19:39:01
- * @LastEditTime: 2022-04-23 10:18:01
- * @LastEditors: 郑钊宇
- * @Description:
--->
-<!--
- * @Author: 郑钊宇
- * @Date: 2022-04-22 11:03:28
- * @LastEditTime: 2022-04-22 12:05:46
+ * @LastEditTime: 2022-04-24 19:34:54
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -17,7 +10,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.author" placeholder="作者" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.title" placeholder="课题名称或承担项目" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.sourcePublication" placeholder="项目来源" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.sourcePublication" placeholder="来源刊物" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
