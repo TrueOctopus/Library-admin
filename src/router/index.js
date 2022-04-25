@@ -165,7 +165,7 @@ export const asyncRoutes = [
     path: '/announcement',
     component: Layout,
     redirect: '/announcement/newslist',
-    meta: { title: '新闻公告管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '新闻公告管理', icon: 'documentation', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'create',
@@ -194,7 +194,7 @@ export const asyncRoutes = [
     path: '/lectures',
     component: Layout,
     redirect: '/lectures/lecturesList',
-    meta: { title: '活动讲座', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '活动讲座', icon: 'el-icon-date', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'create',
@@ -222,7 +222,7 @@ export const asyncRoutes = [
     path: '/publicity',
     component: Layout,
     redirect: '/publicity/publicityList',
-    meta: { title: '阅读推广', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '阅读推广', icon: 'el-icon-reading', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'create',
@@ -250,7 +250,7 @@ export const asyncRoutes = [
     path: '/pages',
     component: Layout,
     redirect: '/pages/pageList',
-    meta: { title: '页面管理', icon: 'el-icon-s-help', roles: ['admin', 'editor'] },
+    meta: { title: '页面管理', icon: 'el-icon-document', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'pageList',
@@ -503,7 +503,7 @@ export const asyncRoutes = [
     path: '/file',
     component: Layout,
     redirect: '/file/filelist',
-    meta: { title: '文件/图片管理', icon: 'table', roles: ['admin', 'editor'] },
+    meta: { title: '文件/图片管理', icon: 'el-icon-folder', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'upload',
@@ -524,13 +524,28 @@ export const asyncRoutes = [
     path: '/comment',
     component: Layout,
     redirect: '/comment/commentlist',
-    meta: { title: '留言板管理', icon: 'table', roles: ['admin', 'editor'] },
+    meta: { title: '留言板管理', icon: 'el-icon-edit', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'commentlist',
         name: 'commentlist',
         component: () => import('@/views/comment/commentList'),
-        meta: { title: '留言列表', icon: 'table' }
+        meta: { title: '留言列表', icon: 'el-icon-edit' }
+      }
+    ]
+  },
+
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/loglist',
+    meta: { title: '日志管理', icon: 'table', roles: ['admin'] },
+    children: [
+      {
+        path: 'loglist',
+        name: 'loglist',
+        component: () => import('@/views/log/logList'),
+        meta: { title: '日志管理', icon: 'table' }
       }
     ]
   },
