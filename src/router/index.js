@@ -292,48 +292,48 @@ export const asyncRoutes = [
             meta: { title: '馆藏目录', icon: 'table', noCache: true }
           },
 
-          {
-            path: 'databaseGuide',
-            name: 'databaseGuide',
-            component: () => import('@/views/pages/edit'),
-            meta: { title: '数据库导航', icon: 'table', noCache: true },
-            children: [
-              {
-                path: 'allresource',
-                name: 'allresource',
-                component: () => import('@/views/pages/edit'),
-                meta: { title: '全部资源', icon: 'table', noCache: true }
-              },
+          // {
+          //   path: 'databaseGuide',
+          //   name: 'databaseGuide',
+          //   component: () => import('@/views/pages/edit'),
+          //   meta: { title: '数据库导航', icon: 'table', noCache: true },
+          //   children: [
+          //     {
+          //       path: 'allresource',
+          //       name: 'allresource',
+          //       component: () => import('@/views/pages/edit'),
+          //       meta: { title: '全部资源', icon: 'table', noCache: true }
+          //     },
 
-              {
-                path: 'cnresource',
-                name: 'cnresource',
-                component: () => import('@/views/pages/edit'),
-                meta: { title: '中文资源', icon: 'table', noCache: true }
-              },
+          //     {
+          //       path: 'cnresource',
+          //       name: 'cnresource',
+          //       component: () => import('@/views/pages/edit'),
+          //       meta: { title: '中文资源', icon: 'table', noCache: true }
+          //     },
 
-              {
-                path: 'foreignResource',
-                name: 'foreignResource',
-                component: () => import('@/views/pages/edit'),
-                meta: { title: '外文资源', icon: 'table', noCache: true }
-              },
+          //     {
+          //       path: 'foreignResource',
+          //       name: 'foreignResource',
+          //       component: () => import('@/views/pages/edit'),
+          //       meta: { title: '外文资源', icon: 'table', noCache: true }
+          //     },
 
-              {
-                path: 'tryResource',
-                name: 'tryResource',
-                component: () => import('@/views/pages/edit'),
-                meta: { title: '试用资源', icon: 'table', noCache: true }
-              },
+          //     {
+          //       path: 'tryResource',
+          //       name: 'tryResource',
+          //       component: () => import('@/views/pages/edit'),
+          //       meta: { title: '试用资源', icon: 'table', noCache: true }
+          //     },
 
-              {
-                path: 'openResource',
-                name: 'openResource',
-                component: () => import('@/views/pages/edit'),
-                meta: { title: '开放资源', icon: 'table', noCache: true }
-              }
-            ]
-          },
+          //     {
+          //       path: 'openResource',
+          //       name: 'openResource',
+          //       component: () => import('@/views/pages/edit'),
+          //       meta: { title: '开放资源', icon: 'table', noCache: true }
+          //     }
+          //   ]
+          // },
 
           {
             path: 'characteristicPage',
