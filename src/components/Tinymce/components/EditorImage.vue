@@ -58,7 +58,7 @@ export default {
     handleSubmit() {
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
       if (!this.checkAllSuccess()) {
-        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
+        this.$message('请等待所有的图片上传完毕。如果有网络问题，请稍后重试!')
         return
       }
       this.$emit('successCBK', arr)
