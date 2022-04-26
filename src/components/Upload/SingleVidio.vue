@@ -1,14 +1,14 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:30:17
- * @LastEditTime: 2022-04-13 09:38:25
+ * @LastEditTime: 2022-04-26 09:46:08
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <el-upload
     class="upload-demo"
-    action="http://localhost:8081/fileUpload/uploadVideoAction"
+    :action="uploadUrl"
     :headers="{'token': $store.getters.token}"
     :on-remove="handleRemove"
     :on-success="handleImageSuccess"
@@ -27,7 +27,8 @@ import { deleteFileByUuid } from '@/api/file'
 export default {
   data() {
     return {
-      fileList: []
+      fileList: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + '/fileUpload/uploadVideoAction'
     }
   },
   methods: {

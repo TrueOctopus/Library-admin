@@ -9,7 +9,7 @@
       :headers="{'token': $store.getters.token}"
       drag
       name="oneFile"
-      action="http://localhost:8081/fileUpload/uploadPictureAction"
+      :action="uploadUrl"
     >
       <i class="el-icon-upload" />
       <div class="el-upload__text">
@@ -49,7 +49,8 @@ export default {
   },
   data() {
     return {
-      tempUrl: ''
+      tempUrl: '',
+      uploadUrl: process.env.VUE_APP_BASE_API + '/fileUpload/uploadPictureAction'
     }
   },
   computed: {

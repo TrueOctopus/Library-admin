@@ -11,8 +11,10 @@
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
+        :headers="{'token': $store.getters.token}"
+        name="oneFile"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        :action="uploadUrl"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
@@ -31,6 +33,7 @@
 
 <script>
 // import { getToken } from 'api/qiniu'
+import { getPic, deleteFileByUuid } from '@/api/file'
 
 export default {
   name: 'EditorSlideUpload',
@@ -44,7 +47,8 @@ export default {
     return {
       dialogVisible: false,
       listObj: {},
-      fileList: []
+      fileList: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + '/fileUpload/uploadPictureAction'
     }
   },
   methods: {
@@ -63,11 +67,12 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+      console.log(response, file)
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = getPic + response.data.newFileName
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }
@@ -76,12 +81,15 @@ export default {
     handleRemove(file) {
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          delete this.listObj[objKeyArr[i]]
-          return
+      deleteFileByUuid(file.response.data.newFileName).then(response => {
+        console.log(response)
+        for (let i = 0, len = objKeyArr.length; i < len; i++) {
+          if (this.listObj[objKeyArr[i]].uid === uid) {
+            delete this.listObj[objKeyArr[i]]
+            return
+          }
         }
-      }
+      })
     },
     beforeUpload(file) {
       const _self = this

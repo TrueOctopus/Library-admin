@@ -1,14 +1,14 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-12 20:00:15
- * @LastEditTime: 2022-04-20 11:12:42
+ * @LastEditTime: 2022-04-26 09:47:02
  * @LastEditors: 郑钊宇
  * @Description:
 -->
 <template>
   <el-upload
     class="upload-demo"
-    action="http://localhost:8081/fileUpload/uploadFileAction"
+    :action="uploadUrl"
     :headers="{'token': $store.getters.token}"
     :on-remove="handleRemove"
     :on-success="handleImageSuccess"
@@ -36,7 +36,8 @@ export default {
   },
   data() {
     return {
-      fileList: []
+      fileList: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + '/fileUpload/uploadFileAction'
     }
   },
   watch: {
