@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-04-24 19:59:33
- * @LastEditTime: 2022-04-25 14:40:32
+ * @LastEditTime: 2022-04-26 14:53:35
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="登录浏览器" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.bowser }}</span>
+          <span>{{ scope.row.browser }}</span>
         </template>
       </el-table-column>
       <el-table-column label="登录权限" width="110" align="center">
@@ -131,7 +131,7 @@ export default {
     fetchData() {
       this.listLoading = true
       logSearch(this.listQuery).then(response => {
-        // console.log(response)
+        console.log(response)
         this.list = response.data.logs.list
         this.total = response.data.logs.total
         this.listLoading = false
