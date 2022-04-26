@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-22 12:04:42
+ * @LastEditTime: 2022-04-26 19:42:46
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -157,7 +157,7 @@ export default {
       rules: {
         urlname: [{ required: true, message: '资源名称不能为空', trigger: 'blur' }],
         urladdress: [{ required: true, message: '资源地址不能为空', trigger: 'blur' }],
-        types: [{ type: 'array', required: true, message: '请至少选择一个资源类型', trigger: 'change' }],
+        types: [{ type: 'array', required: true, message: '请至少选择一个资源类型', trigger: 'blur' }],
         genre: [{ required: true, message: '资源类别不能为空', trigger: 'change' }]
       },
       resourceTypeOptions: [
