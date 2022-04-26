@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-05 09:50:13
+ * @LastEditTime: 2022-04-26 16:06:26
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -155,7 +155,7 @@ export default {
     fetchData() {
       this.listLoading = true
       fetchStaffList(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageinfo.list
         this.total = response.data.pageinfo.total
         this.listLoading = false

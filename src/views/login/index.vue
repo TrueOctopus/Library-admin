@@ -68,8 +68,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -110,7 +110,7 @@ export default {
             this.loading = false
           })
         } else {
-          console.log('提交失败!!')
+          // console.log('提交失败!!')
           return false
         }
       })

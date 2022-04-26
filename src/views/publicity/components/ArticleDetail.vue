@@ -170,7 +170,7 @@ export default {
           this.postForm.isrelease = isrelease
           if (this.isEdit) {
             updatePublicity(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',
@@ -181,7 +181,7 @@ export default {
             })
           } else {
             addPublicity(this.postForm).then(response => {
-              console.log(response)
+              // console.log(response)
               this.$notify({
                 title: '成功',
                 message: isrelease === 1 ? '发布文章成功' : '已存为草稿',
@@ -192,7 +192,7 @@ export default {
             })
           }
         } else {
-          console.log('提交错误!!')
+          // console.log('提交错误!!')
           this.loading = false
           return false
         }

@@ -131,7 +131,7 @@ export default {
     fetchData() {
       this.listLoading = true
       logSearch(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.logs.list
         this.total = response.data.logs.total
         this.listLoading = false
@@ -141,9 +141,9 @@ export default {
       this.listLoading = true
       this.listQuery.initialTime = this.dateTimeToString(this.dateRange[0])
       this.listQuery.endTime = this.dateTimeToString(this.dateRange[1])
-      console.log('this.listQuery', this.listQuery)
+      // console.log('this.listQuery', this.listQuery)
       timeSearchLog(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.logs.list
         this.total = response.data.logs.total
         this.listLoading = false

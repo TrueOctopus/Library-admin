@@ -68,7 +68,7 @@ export default {
         type: 'success',
         duration: 2000
       })
-      console.log('Success', file, fileList)
+      // console.log('Success', file, fileList)
       // console.log(file)
     },
     handleExceed(files, fileList) {
