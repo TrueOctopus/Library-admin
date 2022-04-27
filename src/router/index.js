@@ -359,6 +359,13 @@ export const asyncRoutes = [
       },
 
       {
+        path: 'cademicianIntroduction',
+        name: 'AcademicianIntroduction',
+        component: () => import('@/views/pages/edit'),
+        meta: { title: '院士介绍', icon: 'table' }
+      },
+
+      {
         path: 'service',
         name: 'service',
         component: () => import('@/views/pages/edit'),
