@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-26 16:06:26
+ * @LastEditTime: 2022-05-22 21:45:07
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -76,7 +76,7 @@
         <el-form-item label="职工名" prop="worker">
           <el-input v-model="temp.worker" />
         </el-form-item>
-        <el-form-item label="姓名" prop="workNumber">
+        <el-form-item label="职工号" prop="workNumber">
           <el-input v-model="temp.workNumber" />
         </el-form-item>
         <el-form-item label="读者证号" prop="readerIdNumber">
