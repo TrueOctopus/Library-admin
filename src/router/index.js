@@ -276,7 +276,29 @@ export const asyncRoutes = [
         path: 'introduction',
         name: 'introduction',
         component: () => import('@/views/pages/edit'),
-        meta: { title: '本馆概况', icon: 'table' }
+        meta: { title: '概况', icon: 'table' },
+        children: [
+          {
+            path: 'libraryIntroduction',
+            name: 'libraryIntroduction',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '本馆概况', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'leaderIntroduction',
+            name: 'leaderIntroduction',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '现任领导', icon: 'table', noCache: true }
+          },
+
+          {
+            path: 'departmentIntroduction',
+            name: 'departmentIntroduction',
+            component: () => import('@/views/pages/edit'),
+            meta: { title: '部门介绍', icon: 'table', noCache: true }
+          }
+        ]
       },
 
       {
