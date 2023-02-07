@@ -431,10 +431,10 @@ export const asyncRoutes = [
           },
 
           {
-            path: 'bookReport',
-            name: 'bookReport',
+            path: 'bookClub',
+            name: 'bookClub',
             component: () => import('@/views/pages/edit'),
-            meta: { title: '新书通报', icon: 'table', noCache: true }
+            meta: { title: '山水读书社', icon: 'table', noCache: true }
           },
 
           {
