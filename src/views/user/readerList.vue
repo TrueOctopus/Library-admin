@@ -1,7 +1,7 @@
 <!--
  * @Author: 郑钊宇
  * @Date: 2022-03-30 18:51:55
- * @LastEditTime: 2022-04-05 09:41:31
+ * @LastEditTime: 2023-03-21 12:12:21
  * @LastEditors: 郑钊宇
  * @Description:
 -->
@@ -85,6 +85,9 @@
           <el-input v-model="temp.email" />
         </el-form-item>
         <el-form-item v-if="dialogStatus==='create'" label="密码" prop="password">
+          <el-input v-model="temp.password" />
+        </el-form-item>
+        <el-form-item v-else label="密码" prop="password2">
           <el-input v-model="temp.password" />
         </el-form-item>
         <el-form-item label="权限" prop="jurisdiction">
@@ -171,6 +174,9 @@ export default {
       fetchUserList(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageinfo.list
+        this.list.forEach(ele => {
+          ele.password = ''
+        })
         this.total = response.data.pageinfo.total
         this.listLoading = false
       })
@@ -230,9 +236,23 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const data = this.temp
-          delete data.password
+          if (!data.password) {
+            delete data.password
+          } else {
+            data.password = data.password.trim()
+            if (data.password.length < 6) {
+              this.$notify({
+                title: '失败',
+                message: '密码长度应大于6',
+                type: 'error',
+                duration: 2000
+              })
+              return
+            }
+          }
           delete data.createtime
           delete data.updatetime
+          // console.log(data)
           userUpdate(data).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
